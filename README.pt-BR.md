@@ -6,6 +6,24 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 
 ---
 
+## 🎨 Inspiração vs. Resultado
+
+### 🧚‍♀️ Caixa de Diálogo da Navi (`SwayNC`)
+
+| 🎮 Inspiração (*Ocarina of Time 3D*) | ✨ Resultado (*SwayNC Notification Center*) |
+| :---: | :---: |
+| ![Inspiração Diálogo da Navi](assets/previews/navi_dialogue_inspiration.png) | ![Resultado Diálogo da Navi](assets/previews/navi_dialogue_result.png) |
+| *Caixa de diálogo original da Navi no jogo, com borda brilhante, crachá de nome no topo e seta azul inferior.* | *Notificações e central de controle do SwayNC recriando fielmente a estética da fada.* |
+
+### 🔔 Indicador de Estado da Navi (`Waybar`)
+
+| 🎮 Inspiração (*HUD do Ocarina of Time 3D*) | ✨ Resultado (*Módulo na Waybar*) |
+| :---: | :---: |
+| ![Inspiração HUD da Navi](assets/previews/navi_hud_inspiration.png) | ![Resultado Navi na Waybar](assets/previews/navi_waybar_result.png) |
+| *Ícone da fada no HUD original do jogo.* | *Módulo interativo na Waybar que brilha e pulsa ao receber novas notificações ("Hey! Listen!").* |
+
+---
+
 ## ✨ O que está incluso
 
 ### 1. 🖼️ Bordas Ornamentadas de Janela (`hypr/`)

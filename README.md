@@ -6,6 +6,24 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 
 ---
 
+## 🎨 Inspiration vs. Result
+
+### 🧚‍♀️ Navi Dialogue Notifications (`SwayNC`)
+
+| 🎮 Inspiration (*Ocarina of Time 3D*) | ✨ Result (*SwayNC Notification Center*) |
+| :---: | :---: |
+| ![Navi Dialogue Inspiration](assets/previews/navi_dialogue_inspiration.png) | ![Navi Dialogue Result](assets/previews/navi_dialogue_result.png) |
+| *Original in-game Navi speech bubble with glowing stadium border, top-left name plate, and bottom blue arrow.* | *Custom SwayNC notification cards & control center matching the fairy dialogue aesthetic.* |
+
+### 🔔 Navi Status Indicator (`Waybar`)
+
+| 🎮 Inspiration (*Ocarina of Time 3D HUD*) | ✨ Result (*Waybar Module*) |
+| :---: | :---: |
+| ![Navi HUD Inspiration](assets/previews/navi_hud_inspiration.png) | ![Navi Waybar Result](assets/previews/navi_waybar_result.png) |
+| *In-game HUD fairy icon indicator.* | *Interactive Waybar module that glows and pulses on new notifications ("Hey! Listen!").* |
+
+---
+
 ## ✨ Features Included
 
 ### 1. 🖼️ Ornate 9-Slice Window Borders (`hypr/`)
