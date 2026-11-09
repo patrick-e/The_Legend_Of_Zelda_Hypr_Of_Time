@@ -8,14 +8,28 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 
 ## 🎨 Inspiração vs. Resultado
 
-### 🧚‍♀️ Caixa de Diálogo da Navi (`SwayNC`)
+### 1. 🖼️ Bordas Ornamentadas de Janela (`Hyprland` + `imgborders`)
+
+| 🎮 Inspiração (*Ocarina of Time Remake*) | ✨ Resultado (*Bordas 9-Slice no Hyprland*) |
+| :---: | :---: |
+| ![Inspiração das Bordas](assets/previews/borders_inspiration.jpg) | ![Resultado das Bordas](assets/previews/borders_result.png) |
+| *Moldura ornamentada com arabescos nos cantos, linhas duplas contínuas e ornamento centralizado nas laterais.* | *Textura 9-slice + plugin `imgborders` modificado mantendo o arabesco sempre no centro exato de qualquer janela.* |
+
+### 2. 🎒 Menu de Itens / Aplicativos (`Wofi`)
+
+| 🎮 Inspiração (*Menu de Itens Ocarina of Time Remake*) | ✨ Resultado (*Launcher Wofi*) |
+| :---: | :---: |
+| ![Inspiração Menu Wofi](assets/previews/wofi_menu_inspiration.png) | ![Resultado Menu Wofi](assets/previews/wofi_menu_result.png) |
+| *Slots quadrados de itens, moldura branca brilhante com setas direcionais e nome do item exibido fora do slot.* | *Menu vertical no Wofi com slots `72x72`, setas `▲`/`▼`, nome externo sobre sublinhado dourado, seleção no mouse hover e sub-ações expansíveis (`▸`).* |
+
+### 3. 🧚‍♀️ Caixa de Diálogo da Navi (`SwayNC`)
 
 | 🎮 Inspiração (*Ocarina of Time 3D*) | ✨ Resultado (*SwayNC Notification Center*) |
 | :---: | :---: |
 | ![Inspiração Diálogo da Navi](assets/previews/navi_dialogue_inspiration.png) | ![Resultado Diálogo da Navi](assets/previews/navi_dialogue_result.png) |
 | *Caixa de diálogo original da Navi no jogo, com borda brilhante, crachá de nome no topo e seta azul inferior.* | *Notificações e central de controle do SwayNC recriando fielmente a estética da fada.* |
 
-### 🔔 Indicador de Estado da Navi (`Waybar`)
+### 4. 🔔 Indicador de Estado da Navi (`Waybar`)
 
 | 🎮 Inspiração (*HUD do Ocarina of Time 3D*) | ✨ Resultado (*Módulo na Waybar*) |
 | :---: | :---: |

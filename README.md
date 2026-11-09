@@ -8,14 +8,28 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 
 ## 🎨 Inspiration vs. Result
 
-### 🧚‍♀️ Navi Dialogue Notifications (`SwayNC`)
+### 1. 🖼️ Ornate Window Borders (`Hyprland` + `imgborders`)
+
+| 🎮 Inspiration (*Ocarina of Time Remake*) | ✨ Result (*Hyprland 9-Slice Borders*) |
+| :---: | :---: |
+| ![Window Borders Inspiration](assets/previews/borders_inspiration.jpg) | ![Window Borders Result](assets/previews/borders_result.png) |
+| *Ornate region introduction frame with corner flourishes, double lines, and centered edge motifs.* | *Custom 9-slice border texture + patched `imgborders` plugin keeping the ornament centered on every window edge.* |
+
+### 2. 🎒 Item Selection App Launcher (`Wofi`)
+
+| 🎮 Inspiration (*Ocarina of Time Remake Item Screen*) | ✨ Result (*Wofi App Launcher*) |
+| :---: | :---: |
+| ![Wofi Menu Inspiration](assets/previews/wofi_menu_inspiration.png) | ![Wofi Menu Result](assets/previews/wofi_menu_result.png) |
+| *Square item slots, glowing white selection border with directional chevrons, and external item label.* | *Vertical Wofi launcher with `72x72` ornate slots, `▲`/`▼` chevrons, external label + gold underline, mouse hover, and expandable sub-actions (`▸`).* |
+
+### 3. 🧚‍♀️ Navi Dialogue Notifications (`SwayNC`)
 
 | 🎮 Inspiration (*Ocarina of Time 3D*) | ✨ Result (*SwayNC Notification Center*) |
 | :---: | :---: |
 | ![Navi Dialogue Inspiration](assets/previews/navi_dialogue_inspiration.png) | ![Navi Dialogue Result](assets/previews/navi_dialogue_result.png) |
 | *Original in-game Navi speech bubble with glowing stadium border, top-left name plate, and bottom blue arrow.* | *Custom SwayNC notification cards & control center matching the fairy dialogue aesthetic.* |
 
-### 🔔 Navi Status Indicator (`Waybar`)
+### 4. 🔔 Navi Status Indicator (`Waybar`)
 
 | 🎮 Inspiration (*Ocarina of Time 3D HUD*) | ✨ Result (*Waybar Module*) |
 | :---: | :---: |
