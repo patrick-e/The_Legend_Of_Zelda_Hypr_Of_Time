@@ -1,5 +1,5 @@
 /* ============================================================
-   swaync style.css — Zelda: Ocarina of Time 3D (Navi Dialogue Theme)
+   swaync style.css — Zelda: Ocarina of Time Remake (Navi Dialogue Theme)
    ============================================================ */
 
 :root {
@@ -78,7 +78,7 @@ blankwindow,
 
 /* ============================================================
    NAVI DIALOGUE BOX — The actual notification card
-   Matches the OoT 3D Navi speech bubble:
+   Matches the OoT Remake Navi speech bubble:
    - Deep dark midnight interior
    - Misty pale-lavender/ice-blue glowing stadium border
    - Speaker plate badge at top-left (.summary)
@@ -163,7 +163,7 @@ blankwindow,
     filter: none;
 }
 
-/* Speaker badge ("Navi" plate style from OoT 3D) */
+/* Speaker badge ("Navi" plate style from OoT Remake) */
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
     font-size: 0.90rem;
     font-weight: 700;

@@ -2,7 +2,7 @@
 
 > 🌐 **Language / Idioma:** **🇺🇸 English** | [🇧🇷 Português (Brasil)](README.pt-BR.md)
 
-A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by the UI of **The Legend of Zelda: Ocarina of Time 3D** and **Breath of the Wild**.
+A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by the UI of **The Legend of Zelda: Ocarina of Time Remake** and **Breath of the Wild**.
 
 ---
 
@@ -24,14 +24,14 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 
 ### 3. 🧚‍♀️ Navi Dialogue Notifications (`SwayNC`)
 
-| 🎮 Inspiration (*Ocarina of Time 3D*) | ✨ Result (*SwayNC Notification Center*) |
+| 🎮 Inspiration (*Ocarina of Time Remake*) | ✨ Result (*SwayNC Notification Center*) |
 | :---: | :---: |
 | ![Navi Dialogue Inspiration](assets/previews/navi_dialogue_inspiration.png) | ![Navi Dialogue Result](assets/previews/navi_dialogue_result.png) |
 | *Original in-game Navi speech bubble with glowing stadium border, top-left name plate, and bottom blue arrow.* | *Custom SwayNC notification cards & control center matching the fairy dialogue aesthetic.* |
 
 ### 4. 🔔 Navi Status Indicator (`Waybar`)
 
-| 🎮 Inspiration (*Ocarina of Time 3D HUD*) | ✨ Result (*Waybar Module*) |
+| 🎮 Inspiration (*Ocarina of Time Remake HUD*) | ✨ Result (*Waybar Module*) |
 | :---: | :---: |
 | ![Navi HUD Inspiration](assets/previews/navi_hud_inspiration.png) | ![Navi Waybar Result](assets/previews/navi_waybar_result.png) |
 | *In-game HUD fairy icon indicator.* | *Interactive Waybar module that glows and pulses on new notifications ("Hey! Listen!").* |
@@ -45,7 +45,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 - Custom patched [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) Hyprland plugin with centered UV mapping (`0.5 - span * 0.5` to `0.5 + span * 0.5`) so the middle ornament stays perfectly centered on every window edge regardless of window dimensions.
 - Includes both Hyprland Lua config (`hyprland.lua`) and classic config (`hyprland.conf`).
 
-### 2. 🎒 Wofi App Launcher — *Ocarina of Time 3D Item Screen* (`wofi/`)
+### 2. 🎒 Wofi App Launcher — *Ocarina of Time Remake Item Screen* (`wofi/`)
 - Vertical column layout with a full-screen translucent backdrop and Hyprland layer `blur`.
 - `72x72` dark-bronze/brown square item slots with corner curls (`slot_normal.png`).
 - Bright glowing white frame on the selected item with vertical indicator chevrons (`▲` / `▼`), automatically hiding the top chevron on the first item (`slot_selected_first.png`) and the bottom chevron on the last item (`slot_selected_last.png`).
@@ -56,7 +56,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
   - Horizontal scroll lock (`GTK_POLICY_NEVER` + `hadjustment = 0`) so the icon column remains fixed at the exact center regardless of long `.desktop` app names or screenshot tools.
 
 ### 3. 🧚‍♀️ Navi Notification System (`swaync/` + `waybar/` + `hypr/scripts/`)
-- **Navi Dialogue Box (`swaync/`):** Notifications styled after the *Ocarina of Time 3D* Navi speech bubble — deep midnight-blue translucent card, glowing fairy-blue stadium border, top-left speaker badge, and the signature glowing blue downward triangle (`navi-arrow.png`).
+- **Navi Dialogue Box (`swaync/`):** Notifications styled after the *Ocarina of Time Remake* Navi speech bubble — deep midnight-blue translucent card, glowing fairy-blue stadium border, top-left speaker badge, and the signature glowing blue downward triangle (`navi-arrow.png`).
 - **Interactive Waybar Indicator (`waybar/`):** Top-bar Navi sprite (`navi-idle.png`) that flashes and glows in alert mode (`navi-alert.png`) when unread notifications arrive or on hover.
 - **Bilingual Navi Quotes (`navi_frases_en.txt` & `navi_frases.txt`):** On Hyprland startup (or anytime on demand), Navi greets you with *Ocarina of Time* + Linux/Hyprland tips in either **English** or **Portuguese**.
 
@@ -131,12 +131,12 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │       └── waybar-fullscreen.sh     # Auto-hide Waybar on fullscreen windows
 ├── wofi/
 │   ├── config                       # Wofi geometry & layout configuration
-│   ├── style.css                    # Ocarina of Time 3D item screen stylesheet
+│   ├── style.css                    # Ocarina of Time Remake item screen stylesheet
 │   ├── libwofi_hover.c              # GTK3 LD_PRELOAD hook for hover-select & scroll lock
 │   └── assets/                      # Normal, selected, first/last slots & header textures
 ├── swaync/
 │   ├── config.json                  # Navi dialogue notification configuration
-│   ├── style.css                    # Ocarina of Time 3D speech bubble stylesheet
+│   ├── style.css                    # Ocarina of Time Remake speech bubble stylesheet
 │   └── icons/                       # Bottom-center Navi dialogue arrow (SVG/PNG)
 └── waybar/
     ├── config.jsonc                 # Top bar config with Navi custom/notification module

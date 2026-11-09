@@ -70,8 +70,8 @@ else
     echo "      [!] Warning: hyprland headers not found via pkg-config; skipping libimgborders.so build."
 fi
 
-# 4. Install Wofi Ocarina of Time 3D theme & compile hover/scroll hook
-echo "[3/5] Installing Wofi Ocarina of Time 3D launcher theme..."
+# 4. Install Wofi Ocarina of Time Remake theme & compile hover/scroll hook
+echo "[3/5] Installing Wofi Ocarina of Time Remake launcher theme..."
 cp -f "$REPO_DIR/wofi/assets/"*.png "$CONFIG_DIR/wofi/assets/"
 cp -f "$REPO_DIR/wofi/libwofi_hover.c" "$CONFIG_DIR/wofi/libwofi_hover.c"
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/wofi/config" > "$CONFIG_DIR/wofi/config"
