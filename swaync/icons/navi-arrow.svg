@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="44" viewBox="0 0 64 44">
+  <defs>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur1"/>
+      <feColorMatrix in="blur1" type="matrix"
+        values="0.55 0 0 0 0.25
+                0.65 0 0 0 0.35
+                1.00 0 0 0 0.45
+                0    0 0 0.95 0" result="blueGlow"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.0" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blueGlow"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#glow)">
+    <!-- Outer triangle -->
+    <polygon points="10,6 54,6 32,36" fill="none" stroke="#d8e4ff" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- Inner triangle -->
+    <polygon points="20,11 44,11 32,27" fill="#eef4ff" opacity="0.9"/>
+  </g>
+</svg>

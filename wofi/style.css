@@ -1,0 +1,202 @@
+* {
+    font-family: "Noto Serif Display", "Noto Serif", "DejaVu Serif", serif;
+    outline: none;
+    box-shadow: none;
+}
+
+window {
+    margin: 0px;
+    padding: 0px;
+    /* 92% transparente: aplica o blur do Hyprland na tela toda sem escurecer o fundo */
+    background-color: rgba(10, 16, 24, 0.08);
+    border: none;
+}
+
+#outer-box {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#input {
+    margin: 60px 830px 14px 790px;
+    padding: 6px 12px 10px 12px;
+    min-width: 300px;
+    min-height: 28px;
+    background-color: transparent;
+    background-image: url("__HOME__/.config/wofi/assets/header_bg.png");
+    background-size: 300px 42px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    border: none;
+    border-radius: 0px;
+    color: #f6f4e4;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.9);
+    caret-color: #f6f4e4;
+}
+
+#input:focus {
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+#input image {
+    color: rgba(235, 224, 190, 0.85);
+    margin-right: 8px;
+}
+
+#scroll {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#inner-box {
+    /* Com halign=start e scroll horizontal travado em 0 no C, margin-left: 790px trava os quadrados sempre no mesmo pixel exato! */
+    margin: 0px 0px 0px 790px;
+    padding: 0px 0px 240px 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#entry {
+    margin: 0px;
+    /* padding-left: 40px coloca o ícone 48x48 em x=40..88 (centro 64, exatamente no meio do quadrado 28..100) */
+    padding: 24px 8px 24px 40px;
+    min-width: 340px;
+    min-height: 48px;
+    background-color: transparent;
+    background-image: url("__HOME__/.config/wofi/assets/slot_normal.png");
+    background-size: 340px 96px;
+    background-position: left top;
+    background-repeat: no-repeat;
+    border: none;
+    border-radius: 0px;
+}
+
+/* Destaca ao navegar pelo teclado (:selected) ou ao passar o mouse (:hover) */
+#entry:selected,
+#entry:hover {
+    background-color: transparent;
+    background-image: url("__HOME__/.config/wofi/assets/slot_selected.png");
+    background-size: 340px 96px;
+    background-position: left top;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+}
+
+/* Primeiro app sem seta para cima (▲) */
+#entry:first-child:selected,
+#entry:first-child:hover {
+    background-image: url("__HOME__/.config/wofi/assets/slot_selected_first.png");
+}
+
+/* Último app sem seta para baixo (▼) */
+#entry:last-child:selected,
+#entry:last-child:hover {
+    background-image: url("__HOME__/.config/wofi/assets/slot_selected_last.png");
+}
+
+#img {
+    margin-left: 0px;
+    margin-right: 28px;
+}
+
+#text {
+    color: transparent;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-shadow: none;
+}
+
+#entry:selected #text,
+#entry:hover #text {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0px 0px 10px rgba(180, 230, 255, 0.8), 0px 2px 4px rgba(0, 0, 0, 0.95);
+}
+
+/* Suporte a sub-opções de aplicativos (ex: Brave -> Nova janela anônima / Abrir com Tor) */
+/* Posiciona a seta clicável em x=4..22 (fora do quadrado 28..100, sem ficar atrás do logo do Brave!) */
+expander {
+    margin-left: -36px;
+    background-color: transparent;
+    border: none;
+}
+
+expander > title > arrow,
+expander arrow {
+    color: #f6f4e4;
+    min-width: 18px;
+    min-height: 18px;
+    margin-left: 0px;
+    margin-right: 18px;
+}
+
+expander #img {
+    /* Zero margem negativa no #img para não cobrir a seta clicável! */
+    margin-left: 0px;
+    margin-right: 28px;
+}
+
+expander list {
+    margin: 18px 8px 4px 28px;
+    padding: 6px;
+    background-color: rgba(20, 15, 10, 0.88);
+    border: 1px solid rgba(195, 168, 115, 0.65);
+    border-radius: 6px;
+}
+
+expander list row#entry,
+expander list row#entry:first-child,
+expander list row#entry:last-child {
+    margin: 3px 0px;
+    padding: 8px 12px;
+    min-width: 260px;
+    min-height: 28px;
+    background-image: none;
+    background-color: rgba(34, 24, 16, 0.75);
+    border: 1px solid rgba(105, 78, 50, 0.55);
+    border-radius: 4px;
+}
+
+expander list row#entry:selected,
+expander list row#entry:hover,
+expander list row#entry:first-child:selected,
+expander list row#entry:first-child:hover,
+expander list row#entry:last-child:selected,
+expander list row#entry:last-child:hover {
+    background-image: none;
+    background-color: rgba(195, 168, 115, 0.30);
+    border: 1px solid #fffef0;
+}
+
+expander list row#entry #img {
+    margin-left: 0px;
+    margin-right: 10px;
+}
+
+expander list row#entry #text {
+    color: #dfd3b8;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+expander list row#entry:selected #text,
+expander list row#entry:hover #text {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-shadow: 0px 0px 8px rgba(180, 230, 255, 0.7);
+}
