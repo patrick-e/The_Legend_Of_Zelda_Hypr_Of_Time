@@ -8,6 +8,19 @@ import time
 
 RUNTIME_DIR = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
 STATE_FILE = os.path.join(RUNTIME_DIR, "navi_seen_count")
+LANG_FILE = os.path.expanduser("~/.config/hypr/scripts/.navi_lang")
+
+def get_lang():
+    try:
+        if os.path.exists(LANG_FILE):
+            with open(LANG_FILE, "r") as f:
+                val = f.read().strip().lower()
+                if val in ("en", "pt"):
+                    return val
+    except Exception:
+        pass
+    env_lang = os.environ.get("LANG", "").lower()
+    return "pt" if env_lang.startswith("pt") else "en"
 
 def get_swaync_pid():
     try:
@@ -42,11 +55,12 @@ def emit(css_class, tooltip):
 def main():
     seen_count = load_seen_count()
     blink_bright = True
+    lang = get_lang()
 
     while True:
         swaync_pid = get_swaync_pid()
         if not swaync_pid:
-            emit("none", "Navi (aguardando swaync)")
+            emit("none", "Navi (aguardando swaync)" if lang == "pt" else "Navi (waiting for swaync)")
             time.sleep(1.0)
             continue
 
@@ -67,7 +81,6 @@ def main():
             visible = False
 
             while True:
-                # Se o swaync reiniciou (mudou de PID), reconecta imediatamente
                 current_pid = get_swaync_pid()
                 if current_pid != swaync_pid:
                     break
@@ -101,16 +114,28 @@ def main():
 
                 unread = max(0, count - seen_count)
 
-                if dnd:
-                    emit("dnd", f"Navi silenciada ({count} notificações)")
-                elif visible:
-                    emit("open", f"Ouvindo a Navi ({count} notificações)")
-                elif unread > 0:
-                    blink_bright = not blink_bright
-                    cls = "notification-bright" if blink_bright else "notification-dim"
-                    emit(cls, f"Hey! Listen! ({unread} nova(s), {count} no total)")
+                if lang == "pt":
+                    if dnd:
+                        emit("dnd", f"Navi silenciada ({count} notificações)")
+                    elif visible:
+                        emit("open", f"Ouvindo a Navi ({count} notificações)")
+                    elif unread > 0:
+                        blink_bright = not blink_bright
+                        cls = "notification-bright" if blink_bright else "notification-dim"
+                        emit(cls, f"Hey! Listen! ({unread} nova(s), {count} no total)")
+                    else:
+                        emit("none", f"Navi ({count} notificações)" if count > 0 else "Navi (sem notificações)")
                 else:
-                    emit("none", f"Navi ({count} notificações)" if count > 0 else "Navi (sem notificações)")
+                    if dnd:
+                        emit("dnd", f"Navi silenced ({count} notifications)")
+                    elif visible:
+                        emit("open", f"Listening to Navi ({count} notifications)")
+                    elif unread > 0:
+                        blink_bright = not blink_bright
+                        cls = "notification-bright" if blink_bright else "notification-dim"
+                        emit(cls, f"Hey! Listen! ({unread} new, {count} total)")
+                    else:
+                        emit("none", f"Navi ({count} notifications)" if count > 0 else "Navi (no notifications)")
 
         except Exception:
             pass

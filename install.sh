@@ -4,8 +4,33 @@ set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 
+# Language selection (--en or --pt)
+THEME_LANG=""
+for arg in "$@"; do
+    case "$arg" in
+        --en|-e|en) THEME_LANG="en" ;;
+        --pt|--pt-br|-p|pt) THEME_LANG="pt" ;;
+    esac
+done
+
+if [[ -z "$THEME_LANG" ]]; then
+    if [[ -t 0 ]]; then
+        echo "Select language / Selecione o idioma:"
+        echo "  [1] English (EN)"
+        echo "  [2] Português (PT-BR)"
+        read -rp "Choice / Escolha [1/2] (default: 1): " choice
+        if [[ "$choice" == "2" ]]; then
+            THEME_LANG="pt"
+        else
+            THEME_LANG="en"
+        fi
+    else
+        THEME_LANG="en"
+    fi
+fi
+
 echo "============================================================"
-echo "  The Legend of Zelda: Hypr of Time — Installer"
+echo "  The Legend of Zelda: Hypr of Time — Installer ($THEME_LANG)"
 echo "============================================================"
 
 # 1. Create target directories
@@ -22,6 +47,7 @@ mkdir -p \
 echo "[1/5] Installing Hyprland Zelda border assets & scripts..."
 cp -f "$REPO_DIR/hypr/assets/"*.png "$CONFIG_DIR/hypr/assets/"
 cp -f "$REPO_DIR/hypr/scripts/"* "$CONFIG_DIR/hypr/scripts/"
+echo "$THEME_LANG" > "$CONFIG_DIR/hypr/scripts/.navi_lang"
 chmod +x "$CONFIG_DIR/hypr/scripts/"*.sh
 
 for cfg in hyprland.lua hyprland.conf; do
@@ -51,6 +77,10 @@ cp -f "$REPO_DIR/wofi/libwofi_hover.c" "$CONFIG_DIR/wofi/libwofi_hover.c"
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/wofi/config" > "$CONFIG_DIR/wofi/config"
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/wofi/style.css" > "$CONFIG_DIR/wofi/style.css"
 
+if [[ "$THEME_LANG" == "en" ]]; then
+    sed -i 's/^prompt=Buscar$/prompt=Search/' "$CONFIG_DIR/wofi/config"
+fi
+
 if pkg-config --exists gtk+-3.0; then
     gcc -shared -fPIC -O2 "$CONFIG_DIR/wofi/libwofi_hover.c" \
         -o "$CONFIG_DIR/wofi/libwofi_hover.so" \
@@ -65,6 +95,10 @@ echo "[4/5] Installing SwayNC Navi Dialogue notification theme..."
 cp -f "$REPO_DIR/swaync/icons/"* "$CONFIG_DIR/swaync/icons/"
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/swaync/config.json" > "$CONFIG_DIR/swaync/config.json"
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/swaync/style.css" > "$CONFIG_DIR/swaync/style.css"
+
+if [[ "$THEME_LANG" == "en" ]]; then
+    sed -i 's/Navi está quieta/Navi is quiet/g; s/Silenciar Navi/Silence Navi/g' "$CONFIG_DIR/swaync/config.json"
+fi
 
 echo "[5/5] Installing Waybar Navi status indicator..."
 cp -f "$REPO_DIR/waybar/icons/"* "$CONFIG_DIR/waybar/icons/"

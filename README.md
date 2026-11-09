@@ -1,98 +1,114 @@
 # 🗡️ The Legend of Zelda: Hypr of Time
 
-Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na interface de **The Legend of Zelda: Ocarina of Time 3D** e **Breath of the Wild**.
+> 🌐 **Language / Idioma:** **🇺🇸 English** | [🇧🇷 Português (Brasil)](README.pt-BR.md)
+
+A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by the UI of **The Legend of Zelda: Ocarina of Time 3D** and **Breath of the Wild**.
 
 ---
 
-## ✨ O que está incluso
+## ✨ Features Included
 
-### 1. 🖼️ Bordas Ornamentadas de Janela (`hypr/`)
-- Texturas 9-slice em alta resolução (`zelda_border_ornate.png` e `zelda_border.png`) com arabescos nos 4 cantos, linhas duplas contínuas em marfim/ouro envelhecido e **um único ornamento centralizado** no meio de cada lateral da janela.
-- Versão customizada do plugin [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) com mapeamento UV centralizado (`0.5 - span * 0.5` até `0.5 + span * 0.5`) para garantir que o ornamento fique sempre no centro exato de qualquer janela, independentemente do tamanho.
-- Suporte tanto para configuração em Lua (`hyprland.lua`) quanto tradicional (`hyprland.conf`).
+### 1. 🖼️ Ornate 9-Slice Window Borders (`hypr/`)
+- High-resolution 9-slice border textures (`zelda_border_ornate.png` and `zelda_border.png`) featuring symmetrical corner flourishes, seamless continuous ivory/aged-gold double lines, and **a single centered ornament** in the middle of each window edge.
+- Custom patched [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) Hyprland plugin with centered UV mapping (`0.5 - span * 0.5` to `0.5 + span * 0.5`) so the middle ornament stays perfectly centered on every window edge regardless of window dimensions.
+- Includes both Hyprland Lua config (`hyprland.lua`) and classic config (`hyprland.conf`).
 
-### 2. 🎒 Menu de Aplicativos Wofi — *Ocarina of Time 3D Item Screen* (`wofi/`)
-- Layout em coluna vertical centralizada com fundo escuro translúcido e `blur` de camada inteira no Hyprland.
-- Slots quadrados (`72x72`) em bronze/marrom escuro com ornamentos nos cantos (`slot_normal.png`).
-- Moldura branca brilhante no item selecionado com setas indicadoras verticais (`▲` / `▼`), ocultando automaticamente a seta superior no primeiro item (`slot_selected_first.png`) e a seta inferior no último (`slot_selected_last.png`).
-- Nome do aplicativo exibido **fora do quadrado** (à direita, sobre um sublinhado dourado) exclusivamente quando o item está selecionado.
-- **Interação nativa com mouse e sub-ações (`libwofi_hover.c`):**
-  - Seleção instantânea ao passar o mouse (`hover`) e abertura com clique único.
-  - Seta lateral expansível à esquerda dos aplicativos que possuem ações secundárias (ex.: *Nova janela*, *Nova janela anônima* no navegador).
-  - Trava de rolagem horizontal (`GTK_POLICY_NEVER` + `hadjustment = 0`) para manter a coluna de ícones perfeitamente fixa durante buscas ou capturas de tela.
+### 2. 🎒 Wofi App Launcher — *Ocarina of Time 3D Item Screen* (`wofi/`)
+- Vertical column layout with a full-screen translucent backdrop and Hyprland layer `blur`.
+- `72x72` dark-bronze/brown square item slots with corner curls (`slot_normal.png`).
+- Bright glowing white frame on the selected item with vertical indicator chevrons (`▲` / `▼`), automatically hiding the top chevron on the first item (`slot_selected_first.png`) and the bottom chevron on the last item (`slot_selected_last.png`).
+- App names are displayed **outside the square** (to the right, above an ornate gold/ivory underline) **only when the item is selected**.
+- **Native Mouse Hover & Sub-Actions (`libwofi_hover.c`):**
+  - Instant mouse-hover selection (`gtk_flow_box_select_child`) + single-click activation.
+  - Clickable expander arrow (`▸`) to the left of multi-action apps (e.g., *New Window*, *New Incognito Window* on browsers).
+  - Horizontal scroll lock (`GTK_POLICY_NEVER` + `hadjustment = 0`) so the icon column remains fixed at the exact center regardless of long `.desktop` app names or screenshot tools.
 
-### 3. 🧚‍♀️ Sistema de Notificações da Navi (`swaync/` + `waybar/` + `hypr/scripts/`)
-- **Caixa de Diálogo da Navi (`swaync/`):** Notificações estilizadas como a caixa de diálogo de *Ocarina of Time 3D*, com fundo azul-noturno translúcido, borda brilhante azul-fada, crachá de nome no topo e a clássica seta azul apontando para baixo (`navi-arrow.png`).
-- **Indicador Interativo na Waybar (`waybar/`):** Ícone da Navi na barra superior (`navi-idle.png`) que brilha em estado de alerta (`navi-alert.png`) ao receber novas notificações ou passar o mouse.
-- **Falas da Navi (`hypr/scripts/navi-say.sh` & `navi_frases.txt`):** Ao iniciar a sessão no Hyprland, a Navi cumprimenta você com dicas e referências de *Ocarina of Time* combinadas com o universo Linux/Hyprland.
+### 3. 🧚‍♀️ Navi Notification System (`swaync/` + `waybar/` + `hypr/scripts/`)
+- **Navi Dialogue Box (`swaync/`):** Notifications styled after the *Ocarina of Time 3D* Navi speech bubble — deep midnight-blue translucent card, glowing fairy-blue stadium border, top-left speaker badge, and the signature glowing blue downward triangle (`navi-arrow.png`).
+- **Interactive Waybar Indicator (`waybar/`):** Top-bar Navi sprite (`navi-idle.png`) that flashes and glows in alert mode (`navi-alert.png`) when unread notifications arrive or on hover.
+- **Bilingual Navi Quotes (`navi_frases_en.txt` & `navi_frases.txt`):** On Hyprland startup (or anytime on demand), Navi greets you with *Ocarina of Time* + Linux/Hyprland tips in either **English** or **Portuguese**.
 
 ---
 
-## 📦 Dependências
+## 📦 Dependencies
 
-No Arch Linux (e derivados):
+On Arch Linux (and derivatives):
 
 ```bash
 sudo pacman -S hyprland wofi swaync waybar libnotify socat python gcc pkgconf gtk3
 ```
 
-*(Opcional para a fonte temática usada no CSS)*:
-- `ttf-codenewroman-nerd` (AUR) ou qualquer Nerd Font de sua preferência.
+*(Optional font used in the CSS stylesheets)*:
+- `ttf-codenewroman-nerd` (AUR) or any Nerd Font of your choice.
 
 ---
 
-## 🚀 Instalação Rápida
+## 🚀 Quick Installation
 
-Clone o repositório e execute o instalador automático (ele substitui os caminhos para o seu `$HOME`, compila o `libimgborders.so` e o `libwofi_hover.so`, e faz backup da sua configuração atual do Hyprland):
+Clone the repository and run the automated installer (pass `--en` for English or `--pt` for Portuguese; if omitted, an interactive prompt lets you choose):
 
 ```bash
 git clone https://github.com/patrick-e/The_Legend_Of_Zelda_Hypr_Of_Time.git
 cd The_Legend_Of_Zelda_Hypr_Of_Time
 chmod +x install.sh
-./install.sh
+
+# Install in English (EN):
+./install.sh --en
+
+# Or install in Portuguese (PT-BR):
+./install.sh --pt
 ```
 
----
-
-## 🎮 Atalhos e Uso
-
-- **`SUPER + Space`** — Abre o menu de itens/aplicativos do Wofi (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
-- **`Setas ↑ / ↓` ou `Mouse Hover`** — Navega pelos aplicativos no Wofi.
-- **`Tab` / `Seta →` ou clique na seta `▸` à esquerda do ícone** — Expande os modos de inicialização do aplicativo.
-- **`Clique na Navi (Waybar)`** — Abre a Central de Notificações da Navi (`swaync`).
-- **`~/.config/hypr/scripts/navi-say.sh`** — Dispara uma fala aleatória da Navi a qualquer momento.
+The installer automatically:
+1. Replaces `__HOME__` placeholders with your `$HOME` path across all configs and stylesheets.
+2. Backs up your existing `hyprland.lua` / `hyprland.conf` to `.pre-zelda.bak`.
+3. Compiles the patched `libimgborders.so` Hyprland plugin and `libwofi_hover.so` GTK3 hook.
+4. Configures Navi's quotes, Waybar tooltips, SwayNC labels, and Wofi search prompt in your chosen language (`EN` or `PT-BR`).
 
 ---
 
-## 📁 Estrutura do Repositório
+## 🎮 Keybindings & Usage
+
+- **`SUPER + Space`** — Open the Wofi item/app menu (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
+- **`Arrow Keys ↑ / ↓` or `Mouse Hover`** — Navigate through items in Wofi.
+- **`Tab` / `Right Arrow →` or click the `▸` arrow to the left of an icon** — Expand secondary launch actions for an app.
+- **`Click Navi Icon (Waybar)`** — Toggle the Navi Notification Center (`swaync`).
+- **`~/.config/hypr/scripts/navi-say.sh`** — Trigger a random Navi quote notification at any time.
+
+---
+
+## 📁 Repository Structure
 
 ```text
 The_Legend_Of_Zelda_Hypr_Of_Time/
-├── install.sh                       # Instalador e compilador automático
+├── install.sh                       # Automated installer & compiler (--en / --pt)
+├── README.md                        # English documentation
+├── README.pt-BR.md                  # Portuguese (PT-BR) documentation
 ├── hypr/
-│   ├── hyprland.lua                 # Configuração Hyprland (Lua API)
-│   ├── hyprland.conf                # Configuração Hyprland (Conf tradicional)
+│   ├── hyprland.lua                 # Hyprland configuration (Lua API)
+│   ├── hyprland.conf                # Hyprland configuration (Standard conf)
 │   ├── assets/
-│   │   ├── zelda_border_ornate.png  # Borda 9-slice com arabesco central
-│   │   └── zelda_border.png         # Borda 9-slice minimalista (cantos + linha dupla)
-│   ├── plugins/imgborders/          # Código-fonte C++ do plugin imgborders (UV centralizado)
+│   │   ├── zelda_border_ornate.png  # 9-slice border with centered edge ornaments
+│   │   └── zelda_border.png         # Minimal 9-slice border (corners + double lines)
+│   ├── plugins/imgborders/          # Patched C++ source for imgborders (centered UVs)
 │   └── scripts/
-│       ├── navi-say.sh              # Gerador de notificações da Navi
-│       ├── navi_frases.txt          # Frases temáticas da Navi
-│       ├── hyprsunset-toggle.sh     # Alternador de filtro de luz azul
-│       └── waybar-fullscreen.sh     # Oculta Waybar automaticamente em fullscreen
+│       ├── navi-say.sh              # Random Navi notification trigger (EN / PT-BR)
+│       ├── navi_frases_en.txt       # Navi themed quotes (English)
+│       ├── navi_frases.txt          # Navi themed quotes (Portuguese)
+│       ├── hyprsunset-toggle.sh     # Blue-light shader toggle
+│       └── waybar-fullscreen.sh     # Auto-hide Waybar on fullscreen windows
 ├── wofi/
-│   ├── config                       # Configuração de geometria do Wofi
-│   ├── style.css                    # Tema Ocarina of Time 3D
-│   ├── libwofi_hover.c              # Hook GTK3 para hover-select e trava de scroll horizontal
-│   └── assets/                      # Slots normais, selecionados e cabeçalho
+│   ├── config                       # Wofi geometry & layout configuration
+│   ├── style.css                    # Ocarina of Time 3D item screen stylesheet
+│   ├── libwofi_hover.c              # GTK3 LD_PRELOAD hook for hover-select & scroll lock
+│   └── assets/                      # Normal, selected, first/last slots & header textures
 ├── swaync/
-│   ├── config.json                  # Configuração da caixa de diálogo da Navi
-│   ├── style.css                    # Estilo Ocarina of Time 3D para notificações
-│   └── icons/                       # Seta inferior do diálogo da Navi
+│   ├── config.json                  # Navi dialogue notification configuration
+│   ├── style.css                    # Ocarina of Time 3D speech bubble stylesheet
+│   └── icons/                       # Bottom-center Navi dialogue arrow (SVG/PNG)
 └── waybar/
-    ├── config.jsonc                 # Barra superior com módulo custom/notification da Navi
-    ├── style.css                    # Transições entre estados idle/alert da Navi
-    ├── icons/                       # Sprites SVG/PNG da Navi (idle e alert)
-    └── scripts/                     # Script de monitoramento do estado da Navi
+    ├── config.jsonc                 # Top bar config with Navi custom/notification module
+    ├── style.css                    # Navi idle/alert sprite transitions
+    ├── icons/                       # Navi SVG/PNG sprites (idle & alert)
+    └── scripts/                     # Real-time SwayNC listener & state emitter (EN / PT-BR)
 ```

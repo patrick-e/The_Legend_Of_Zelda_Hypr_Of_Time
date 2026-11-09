@@ -1,15 +1,32 @@
 #!/usr/bin/env bash
 # ============================================================
-# navi-say.sh — Envia uma fala aleatória da Navi em português
-# Usa notify-send (e opcionalmente cowsay no terminal com --cowsay)
+# navi-say.sh — Sends a random Navi quote (PT-BR or EN)
+# Uses notify-send (and optionally cowsay in terminal with --cowsay)
 # ============================================================
 
-QUOTES_FILE="$HOME/.config/hypr/scripts/navi_frases.txt"
+SCRIPTS_DIR="$HOME/.config/hypr/scripts"
+LANG_FILE="$SCRIPTS_DIR/.navi_lang"
+NAVI_LANG="pt"
+
+if [[ -f "$LANG_FILE" ]]; then
+    NAVI_LANG="$(tr -d '[:space:]' < "$LANG_FILE" | tr '[:upper:]' '[:lower:]')"
+elif [[ "${LANG:-}" != pt* ]]; then
+    NAVI_LANG="en"
+fi
+
+if [[ "$NAVI_LANG" == "en" && -f "$SCRIPTS_DIR/navi_frases_en.txt" ]]; then
+    QUOTES_FILE="$SCRIPTS_DIR/navi_frases_en.txt"
+    DEFAULT_QUOTE="\"Hey! Listen! May the Triforce of Wisdom guide your session today!\""
+else
+    QUOTES_FILE="$SCRIPTS_DIR/navi_frases.txt"
+    DEFAULT_QUOTE="\"Hey! Listen! Que a Triforce da Sabedoria guie a sua sessão de hoje!\""
+fi
+
 RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 STATE_FILE="$RUNTIME_DIR/navi_seen_count"
 
-if [[ "$1" == "--startup" ]]; then
-    # Aguarda o swaync e a waybar iniciarem na sessão
+if [[ "${1:-}" == "--startup" ]]; then
+    # Wait for swaync and waybar to start in the session
     for _ in {1..15}; do
         if pgrep -x swaync >/dev/null && pgrep -x waybar >/dev/null; then
             break
@@ -19,24 +36,23 @@ if [[ "$1" == "--startup" ]]; then
     sleep 1.5
 fi
 
-# Escolhe uma frase aleatória (ignorando linhas vazias)
+# Pick a random quote (ignoring empty lines)
 if [[ -f "$QUOTES_FILE" ]]; then
     QUOTE=$(grep -v '^[[:space:]]*$' "$QUOTES_FILE" | shuf -n 1)
 else
-    QUOTE="\"Hey! Listen! Que a Triforce da Sabedoria guie a sua sessão de hoje!\""
+    QUOTE="$DEFAULT_QUOTE"
 fi
 
-# Garante que o contador visto antes do envio esteja sincronizado
-# para que o ícone da Navi na Waybar sempre pisque ao receber a mensagem
+# Sync seen count before sending so the Waybar Navi icon always blinks
 CURRENT_COUNT=$(swaync-client -c -sw 2>/dev/null || echo 0)
 if [[ "$CURRENT_COUNT" =~ ^[0-9]+$ ]]; then
     echo "$CURRENT_COUNT" > "$STATE_FILE"
 fi
 
-# Envia para a central de notificações com o título "Navi"
+# Send notification with title "Navi"
 notify-send -a "Navi" "Navi" "$QUOTE"
 
-# Se chamado no terminal com --cowsay, também imprime no cowsay
-if [[ "$1" == "--cowsay" ]] && command -v cowsay >/dev/null 2>&1; then
+# Optional terminal cowsay output
+if [[ "${1:-}" == "--cowsay" ]] && command -v cowsay >/dev/null 2>&1; then
     cowsay -W 55 "$QUOTE"
 fi
