@@ -36,6 +36,13 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 | ![Navi HUD Inspiration](assets/previews/navi_hud_inspiration.png) | ![Navi Waybar Result](assets/previews/navi_waybar_result.png) |
 | *In-game HUD fairy icon indicator.* | *Interactive Waybar module that glows and pulses on new notifications ("Hey! Listen!").* |
 
+### 5. 📜 Zelda Tapestry & Sage Medallions Top Bar (`Waybar`)
+
+| 🎮 Inspiration (*Ocarina of Time Tapestry & Sage Medallions*) | ✨ Result (*Waybar Tapestry Islands*) |
+| :---: | :---: |
+| ![Waybar Tapestry Inspiration](assets/previews/waybar_tapestry_inspiration.jpg) | ![Waybar Tapestry Result](assets/previews/waybar_tapestry_result.png) |
+| *Ancient Hyrule tapestry featuring woven borders, the 6 Sage Medallions around the Triforce, and celestial motifs.* | *Three tapestry-framed islands (`tapestry-bg.png` + `tapestry-border.png`), the **6 Sage Medallions** as workspace indicators, and a dynamic **Sun's Song** time-of-day emblem.* |
+
 ---
 
 ## ✨ Features Included
@@ -59,6 +66,18 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 - **Navi Dialogue Box (`swaync/`):** Notifications styled after the *Ocarina of Time Remake* Navi speech bubble — deep midnight-blue translucent card, glowing fairy-blue stadium border, top-left speaker badge, and the signature glowing blue downward triangle (`navi-arrow.png`).
 - **Interactive Waybar Indicator (`waybar/`):** Top-bar Navi sprite (`navi-idle.png`) that flashes and glows in alert mode (`navi-alert.png`) when unread notifications arrive or on hover.
 - **Bilingual Navi Quotes (`navi_frases_en.txt` & `navi_frases.txt`):** On Hyprland startup (or anytime on demand), Navi greets you with *Ocarina of Time* + Linux/Hyprland tips in either **English** or **Portuguese**.
+
+### 4. 📜 Zelda Tapestry & Sage Medallions Bar (`waybar/`)
+- **Woven Tapestry Frame:** All three Waybar islands (`modules-left`, `modules-center`, `modules-right`) and tooltips use a tiled parchment/canvas background (`tapestry-bg.png`) and a 9-slice woven border (`tapestry-border.png`).
+- **The 6 Sage Medallions as Workspaces (`hyprland/workspaces`):**
+  - Workspace 1 — **Light Medallion** (`medallion-1-*`)
+  - Workspace 2 — **Forest Medallion** (`medallion-2-*`)
+  - Workspace 3 — **Fire Medallion** (`medallion-3-*`)
+  - Workspace 4 — **Water Medallion** (`medallion-4-*`)
+  - Workspace 5 — **Shadow Medallion** (`medallion-5-*`)
+  - Workspace 6+ — **Spirit Medallion** (`medallion-6-*`)
+  - Each medallion features distinct visual states for **empty** (carved stone slot), **inactive/occupied** (colored emblem), and **active/focused** (bright glowing medallion).
+- **Dynamic *Sun's Song* Time-of-Day Emblem (`custom/sun-song` + `sun-song.sh`):** Displays a tapestry-styled celestial emblem next to the clock that automatically transitions across 6 phases of the day (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) with localized tooltips.
 
 ---
 

@@ -36,6 +36,13 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 | ![Inspiração HUD da Navi](assets/previews/navi_hud_inspiration.png) | ![Resultado Navi na Waybar](assets/previews/navi_waybar_result.png) |
 | *Ícone da fada no HUD original do jogo.* | *Módulo interativo na Waybar que brilha e pulsa ao receber novas notificações ("Hey! Listen!").* |
 
+### 5. 📜 Waybar Tapeçaria de Hyrule & Medalhões dos Sábios (`Waybar`)
+
+| 🎮 Inspiração (*Tapeçaria & Medalhões dos Sábios*) | ✨ Resultado (*Ilhas na Waybar*) |
+| :---: | :---: |
+| ![Inspiração Tapeçaria Waybar](assets/previews/waybar_tapestry_inspiration.jpg) | ![Resultado Tapeçaria Waybar](assets/previews/waybar_tapestry_result.png) |
+| *Tapeçaria antiga de Hyrule com bordas tecidas, os 6 Medalhões dos Sábios ao redor da Triforce e motivos celestes.* | *Três ilhas emolduradas como tapeçaria (`tapestry-bg.png` + `tapestry-border.png`), os **6 Medalhões dos Sábios** como workspaces e o emblema dinâmico da **Canção do Sol**.* |
+
 ---
 
 ## ✨ O que está incluso
@@ -59,6 +66,18 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 - **Caixa de Diálogo da Navi (`swaync/`):** Notificações estilizadas como a caixa de diálogo de *Ocarina of Time Remake*, com fundo azul-noturno translúcido, borda brilhante azul-fada, crachá de nome no topo e a clássica seta azul apontando para baixo (`navi-arrow.png`).
 - **Indicador Interativo na Waybar (`waybar/`):** Ícone da Navi na barra superior (`navi-idle.png`) que brilha em estado de alerta (`navi-alert.png`) ao receber novas notificações ou passar o mouse.
 - **Falas da Navi em Português e Inglês (`navi_frases.txt` & `navi_frases_en.txt`):** Ao iniciar a sessão no Hyprland, a Navi cumprimenta você com dicas e referências de *Ocarina of Time* combinadas com o universo Linux/Hyprland.
+
+### 4. 📜 Barra Superior — Tapeçaria de Zelda & Medalhões dos Sábios (`waybar/`)
+- **Moldura de Tapeçaria:** As três ilhas da Waybar (`modules-left`, `modules-center`, `modules-right`) e os tooltips utilizam fundo texturizado (`tapestry-bg.png`) e borda 9-slice inspirada nas tapeçarias de Zelda (`tapestry-border.png`).
+- **Os 6 Medalhões dos Sábios como Workspaces (`hyprland/workspaces`):**
+  - Workspace 1 — **Medalhão da Luz** (`medallion-1-*`)
+  - Workspace 2 — **Medalhão da Floresta** (`medallion-2-*`)
+  - Workspace 3 — **Medalhão do Fogo** (`medallion-3-*`)
+  - Workspace 4 — **Medalhão da Água** (`medallion-4-*`)
+  - Workspace 5 — **Medalhão das Sombras** (`medallion-5-*`)
+  - Workspace 6+ — **Medalhão do Espírito** (`medallion-6-*`)
+  - Cada medalhão possui estados visuais distintos para **vazio** (`empty`, entalhe apagado), **inativo/ocupado** (`inactive`, medalhão colorido) e **ativo/focado** (`active`, medalhão reluzente).
+- **Emblema Dinâmico da *Canção do Sol* (`custom/sun-song` + `sun-song.sh`):** Exibe ao lado do relógio um emblema celeste em estilo tapeçaria que alterna automaticamente entre 6 fases do dia (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) conforme o horário do sistema.
 
 ---
 
