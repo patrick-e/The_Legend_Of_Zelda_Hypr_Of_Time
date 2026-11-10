@@ -8,12 +8,12 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 
 ## 🎨 Inspiration vs. Result
 
-### 1. 🖼️ Ornate Window Borders (`Hyprland` + `imgborders`)
+### 1. 🖼️ Ornate Window Borders & Dungeon Intro Title (`Hyprland` + `libzelda_borders`)
 
-| 🎮 Inspiration (*Ocarina of Time Remake*) | ✨ Result (*Hyprland 9-Slice Borders*) |
+| 🎮 Inspiration (*Ocarina of Time Remake*) | ✨ Result (*Hyprland 9-Slice Borders & App Intro Title*) |
 | :---: | :---: |
 | ![Window Borders Inspiration](assets/previews/borders_inspiration.jpg) | ![Window Borders Result](assets/previews/borders_result.png) |
-| *Ornate region introduction frame with corner flourishes, double lines, and centered edge motifs.* | *Custom 9-slice border texture + patched `imgborders` plugin keeping the ornament centered on every window edge.* |
+| *Ornate region introduction frame with corner flourishes, double lines, centered edge motifs, and carved Small-Caps region title at the bottom.* | *Custom 9-slice border texture + `libzelda_borders` plugin keeping the ornament centered on every window edge and displaying a carved Zelda title when opening apps that organically dissolves after ~3s.* |
 
 ### 2. 🎒 Item Selection App Launcher (`Wofi`)
 
@@ -47,8 +47,9 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 
 ## ✨ Features Included
 
-### 1. 🖼️ Ornate 9-Slice Window Borders (`hypr/`)
+### 1. 🖼️ Ornate 9-Slice Window Borders & Dungeon Intro Title (`hypr/`)
 - High-resolution 9-slice border textures (`zelda_border_ornate.png` and `zelda_border.png`) featuring symmetrical corner flourishes, seamless continuous ivory/aged-gold double lines, and **a single centered ornament** in the middle of each window edge.
+- **Dungeon Entrance App Title & Dissolve:** When a window opens, its application name is rendered centered at the bottom of the window (aligned with the center border ornament) using *Ocarina of Time* dungeon typography (Small Caps with dropped initial capitals, warm ivory gradient, and carved inner vertical grooves/diamonds). The title stays visible for ~3 seconds and organically erodes/dissolves away while the ornate window borders remain permanently.
 - Custom patched [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) Hyprland plugin with centered UV mapping (`0.5 - span * 0.5` to `0.5 + span * 0.5`) so the middle ornament stays perfectly centered on every window edge regardless of window dimensions.
 - Includes both Hyprland Lua config (`hyprland.lua`) and classic config (`hyprland.conf`).
 

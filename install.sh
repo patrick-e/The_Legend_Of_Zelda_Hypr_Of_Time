@@ -60,14 +60,21 @@ done
 # 3. Compile patched imgborders Hyprland plugin
 echo "[2/5] Compiling patched Hyprland imgborders plugin..."
 if pkg-config --exists hyprland; then
-    g++ -shared -fPIC --no-gnu-unique -O2 -std=c++23 \
+    g++ -shared -fPIC --no-gnu-unique -O2 -std=c++23 -DVERSION=\"3.0.0-zelda\" \
         "$REPO_DIR/hypr/plugins/imgborders/main.cpp" \
         "$REPO_DIR/hypr/plugins/imgborders/ImgBorder.cpp" \
+        "$REPO_DIR/hypr/plugins/imgborders/ImgBorderPassElement.cpp" \
+        "$REPO_DIR/hypr/plugins/imgborders/ImgUtils.cpp" \
         $(pkg-config --cflags --libs hyprland libdrm pixman-1 pangocairo) \
-        -o "$CONFIG_DIR/hypr/plugins/libimgborders.so"
-    echo "      -> Built $CONFIG_DIR/hypr/plugins/libimgborders.so"
+        -o "$CONFIG_DIR/hypr/plugins/libzelda_borders.so.tmp"
+    hyprctl plugin unload "$CONFIG_DIR/hypr/plugins/libimgborders.so" >/dev/null 2>&1 || true
+    hyprctl plugin unload "$CONFIG_DIR/hypr/plugins/libzelda_borders.so" >/dev/null 2>&1 || true
+    cp -f "$CONFIG_DIR/hypr/plugins/libzelda_borders.so.tmp" "$CONFIG_DIR/hypr/plugins/libimgborders.so"
+    mv -f "$CONFIG_DIR/hypr/plugins/libzelda_borders.so.tmp" "$CONFIG_DIR/hypr/plugins/libzelda_borders.so"
+    hyprctl plugin load "$CONFIG_DIR/hypr/plugins/libzelda_borders.so" >/dev/null 2>&1 || true
+    echo "      -> Built $CONFIG_DIR/hypr/plugins/libzelda_borders.so"
 else
-    echo "      [!] Warning: hyprland headers not found via pkg-config; skipping libimgborders.so build."
+    echo "      [!] Warning: hyprland headers not found via pkg-config; skipping libzelda_borders.so build."
 fi
 
 # 4. Install Wofi Ocarina of Time Remake theme & compile hover/scroll hook
@@ -83,8 +90,9 @@ fi
 
 if pkg-config --exists gtk+-3.0; then
     gcc -shared -fPIC -O2 "$CONFIG_DIR/wofi/libwofi_hover.c" \
-        -o "$CONFIG_DIR/wofi/libwofi_hover.so" \
+        -o "$CONFIG_DIR/wofi/libwofi_hover.so.tmp" \
         $(pkg-config --cflags --libs gtk+-3.0) -ldl
+    mv -f "$CONFIG_DIR/wofi/libwofi_hover.so.tmp" "$CONFIG_DIR/wofi/libwofi_hover.so"
     echo "      -> Built $CONFIG_DIR/wofi/libwofi_hover.so"
 else
     echo "      [!] Warning: gtk+-3.0 headers not found; skipping libwofi_hover.so build."

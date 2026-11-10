@@ -8,12 +8,12 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 
 ## 🎨 Inspiração vs. Resultado
 
-### 1. 🖼️ Bordas Ornamentadas de Janela (`Hyprland` + `imgborders`)
+### 1. 🖼️ Bordas Ornamentadas & Título ao Abrir Apps (`Hyprland` + `libzelda_borders`)
 
-| 🎮 Inspiração (*Ocarina of Time Remake*) | ✨ Resultado (*Bordas 9-Slice no Hyprland*) |
+| 🎮 Inspiração (*Ocarina of Time Remake*) | ✨ Resultado (*Bordas 9-Slice & Título de Abertura no Hyprland*) |
 | :---: | :---: |
 | ![Inspiração das Bordas](assets/previews/borders_inspiration.jpg) | ![Resultado das Bordas](assets/previews/borders_result.png) |
-| *Moldura ornamentada com arabescos nos cantos, linhas duplas contínuas e ornamento centralizado nas laterais.* | *Textura 9-slice + plugin `imgborders` modificado mantendo o arabesco sempre no centro exato de qualquer janela.* |
+| *Moldura ornamentada com arabescos nos cantos, linhas duplas contínuas, ornamento centralizado e título entalhado em Small-Caps na parte inferior.* | *Textura 9-slice + plugin `libzelda_borders` mantendo o arabesco no centro de qualquer janela e exibindo o nome do app em tipografia de dungeon ao abrir (~3s com dissolução orgânica).* |
 
 ### 2. 🎒 Menu de Itens / Aplicativos (`Wofi`)
 
@@ -47,8 +47,9 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 
 ## ✨ O que está incluso
 
-### 1. 🖼️ Bordas Ornamentadas de Janela (`hypr/`)
+### 1. 🖼️ Bordas Ornamentadas & Título de Dungeon ao Abrir Apps (`hypr/`)
 - Texturas 9-slice em alta resolução (`zelda_border_ornate.png` e `zelda_border.png`) com arabescos nos 4 cantos, linhas duplas contínuas em marfim/ouro envelhecido e **um único ornamento centralizado** no meio de cada lateral da janela.
+- **Título em Estilo Dungeon & Dissolução Orgânica:** Ao abrir um aplicativo, o nome do app aparece centralizado na parte inferior da janela (alinhado com o arabesco central da borda) seguindo a tipografia das dungeons de *Ocarina of Time* (*Small Caps* com capitulares maiores, gradiente marfim e entalhes internos nas hastes). O texto permanece visível por ~3 segundos e se desintegra organicamente, mantendo as bordas ornamentadas fixas na janela.
 - Versão customizada do plugin [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) com mapeamento UV centralizado (`0.5 - span * 0.5` até `0.5 + span * 0.5`) para garantir que o ornamento fique sempre no centro exato de qualquer janela, independentemente do tamanho.
 - Suporte tanto para configuração em Lua (`hyprland.lua`) quanto tradicional (`hyprland.conf`).
 

@@ -82,7 +82,7 @@ hl.env("_JAVA_AWT_WM_NONREPARENTING", "1")
 ---- LOOK AND FEEL ----
 -----------------------
 
-hl.plugin.load("__HOME__/.config/hypr/plugins/libimgborders.so")
+hl.plugin.load("__HOME__/.config/hypr/plugins/libzelda_borders.so")
 
 -- Refer to https://wiki.hypr.land/configuring/core/config-options/
 hl.config({

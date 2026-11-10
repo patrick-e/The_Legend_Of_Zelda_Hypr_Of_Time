@@ -99,13 +99,14 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
 
   // Register config values
   g_pGlobalState->config.image = makeShared<Config::Values::CStringValue>(
-      "plugin:imgborders:image", "Border image file path.", "");
+      "plugin:imgborders:image", "Border image file path.",
+      "~/.config/hypr/assets/zelda_border_ornate.png");
   g_pGlobalState->config.sizes = makeShared<Config::Values::CCssGapValue>(
       "plugin:imgborders:sizes",
-      "The number of pixels to take from each edge of the image.", 0);
+      "The number of pixels to take from each edge of the image.", 74);
   g_pGlobalState->config.insets = makeShared<Config::Values::CCssGapValue>(
       "plugin:imgborders:insets",
-      "The amount to inset each side into the window.", 0);
+      "The amount to inset each side into the window.", 64);
   g_pGlobalState->config.scale = makeShared<Config::Values::CFloatValue>(
       "plugin:imgborders:scale", "Scale the borders by some amount.", 1);
   g_pGlobalState->config.smooth = makeShared<Config::Values::CBoolValue>(
@@ -142,7 +143,8 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     addToWindow(w);
   }
 
-  return {"imgborders", "Add image borders to windows.", "zacoons", VERSION};
+  return {"imgborders", "Zelda dungeon borders & title intro.", "zacoons",
+          "3.1.0-zelda"};
 }
 
 APICALL EXPORT void PLUGIN_EXIT() {
