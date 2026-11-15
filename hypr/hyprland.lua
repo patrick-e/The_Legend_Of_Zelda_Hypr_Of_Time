@@ -338,6 +338,14 @@ hl.window_rule({
     float = true,
 })
 
+-- Zelda Ocarina Sound UI windowrule
+hl.window_rule({
+    name   = "zelda-pavucontrol-float",
+    match  = { class = "^(zelda-pavucontrol)$" },
+    float  = true,
+    size   = "820 461",
+    center = true,
+})
 
 -- SwayNC layerrules
 hl.layer_rule({

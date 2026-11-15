@@ -43,6 +43,13 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 | ![Inspiração Tapeçaria Waybar](assets/previews/waybar_tapestry_inspiration.jpg) | ![Resultado Tapeçaria Waybar](assets/previews/waybar_tapestry_result.png) |
 | *Tapeçaria antiga de Hyrule com bordas tecidas, os 6 Medalhões dos Sábios ao redor da Triforce e motivos celestes.* | *Três ilhas emolduradas como tapeçaria (`tapestry-bg.png` + `tapestry-border.png`), os **6 Medalhões dos Sábios** como workspaces e o emblema dinâmico da **Canção do Sol**.* |
 
+### 6. 🎶 Mixer de Som — Tela de Canções da Ocarina (`Extensão da Waybar` — Experimental)
+
+| 🎮 Inspiração (*Tela de Canções do Ocarina of Time Remake*) | ✨ Resultado (*Extensão de Som em Tapeçaria*) |
+| :---: | :---: |
+| ![Inspiração UI de Som](assets/previews/sound_ui_inspiration.png) | ![Resultado UI de Som](assets/previews/sound_ui_result.png) |
+| *Arco de canções da Ocarina, arco inferior de Medalhões dos Sábios e pergaminho com partitura e clave de sol.* | *Extensão `GtkLayerShell` ancorada na Waybar com 5 abas de áudio no arco superior, apps com som ativo nos 6 medalhões inferiores, partitura em 3 camadas (capa do Spotify ou ícone do app mais alto) e sliders de volume.* |
+
 ---
 
 ## ✨ O que está incluso
@@ -50,7 +57,7 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 ### 1. 🖼️ Bordas Ornamentadas & Título de Dungeon ao Abrir Apps (`hypr/`)
 - Texturas 9-slice em alta resolução (`zelda_border_ornate.png` e `zelda_border.png`) com arabescos nos 4 cantos, linhas duplas contínuas em marfim/ouro envelhecido e **um único ornamento centralizado** no meio de cada lateral da janela.
 - **Título em Estilo Dungeon & Dissolução Orgânica:** Ao abrir um aplicativo, o nome do app aparece centralizado na parte inferior da janela (alinhado com o arabesco central da borda) seguindo a tipografia das dungeons de *Ocarina of Time* (*Small Caps* com capitulares maiores, gradiente marfim e entalhes internos nas hastes). O texto permanece visível por ~3 segundos e se desintegra organicamente, mantendo as bordas ornamentadas fixas na janela.
-- Versão customizada do plugin [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) com mapeamento UV centralizado (`0.5 - span * 0.5` até `0.5 + span * 0.5`) para garantir que o ornamento fique sempre no centro exato de qualquer janela, independentemente do tamanho.
+- Versão customizada do plugin [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) com mapeamento UV centralizado (`0.5 - span * 0.5` até `0.5 + span * 0.5`) e animação de abertura nas bordas para garantir que o ornamento fique sempre no centro exato de qualquer janela.
 - Suporte tanto para configuração em Lua (`hyprland.lua`) quanto tradicional (`hyprland.conf`).
 
 ### 2. 🎒 Menu de Aplicativos Wofi — *Ocarina of Time Remake Item Screen* (`wofi/`)
@@ -60,6 +67,7 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 - Nome do aplicativo exibido **fora do quadrado** (à direita, sobre um sublinhado dourado) exclusivamente quando o item está selecionado.
 - **Interação nativa com mouse e sub-ações (`libwofi_hover.c`):**
   - Seleção instantânea ao passar o mouse (`hover`) e abertura com clique único.
+  - Limpa automaticamente o `LD_PRELOAD` ao carregar para que aplicativos iniciados pelo Wofi (ex.: Steam) não herdem o hook GTK3.
   - Seta lateral expansível à esquerda dos aplicativos que possuem ações secundárias (ex.: *Nova janela*, *Nova janela anônima* no navegador).
   - Trava de rolagem horizontal (`GTK_POLICY_NEVER` + `hadjustment = 0`) para manter a coluna de ícones perfeitamente fixa durante buscas ou capturas de tela.
 
@@ -80,6 +88,13 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
   - Cada medalhão possui estados visuais distintos para **vazio** (`empty`, entalhe apagado), **inativo/ocupado** (`inactive`, medalhão colorido) e **ativo/focado** (`active`, medalhão reluzente).
 - **Emblema Dinâmico da *Canção do Sol* (`custom/sun-song` + `sun-song.sh`):** Exibe ao lado do relógio um emblema celeste em estilo tapeçaria que alterna automaticamente entre 6 fases do dia (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) conforme o horário do sistema.
 
+### 5. 🎶 Mixer de Som — Tela de Canções da Ocarina (`waybar/scripts/zelda-pavucontrol.py` — Experimental)
+> ⚠️ **Aviso:** Esta funcionalidade está atualmente em **fase experimental / testes** (vinculada à Issue #2 na branch `2-we-don-t-have-music-ui`) e ainda pode conter bugs não explorados.
+- Abre como uma extensão real da Waybar ancorada no topo direito via `GtkLayerShell`, seguindo a mesma textura e moldura de tapeçaria (`tapestry-bg.png` + `tapestry-border.png`).
+- **Arco Superior (5 Ícones de Canções):** Alterna entre *Settings* (Triforce), *Recording* (Brasão de Hyrule), *Playback* (Canção do Sol), *Output Device* (Canção das Tempestades) e *Input Device* (Canção de Epona).
+- **Arco Inferior (6 Slots de Medalhões):** Substitui dinamicamente cada medalhão 1 a 1 pelo ícone real (`.desktop`) dos aplicativos abertos que estão reproduzindo som em tempo real.
+- **Partitura em 3 Camadas:** Renderiza o pergaminho base -> capa do álbum do Spotify (se estiver tocando) ou o ícone semitransparente do aplicativo com maior volume -> partitura com clave de sol e 5 linhas por cima, acompanhada de controles deslizantes de volume na barra inferior.
+
 ---
 
 ## 📦 Dependências
@@ -87,7 +102,7 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 No Arch Linux (e derivados):
 
 ```bash
-sudo pacman -S hyprland wofi swaync waybar libnotify socat python gcc pkgconf gtk3
+sudo pacman -S hyprland wofi swaync waybar libnotify socat python gcc pkgconf gtk3 python-gobject gtk-layer-shell webkit2gtk-4.1 python-pillow playerctl libpulse
 ```
 
 *(Opcional para a fonte temática usada no CSS)*:
@@ -118,6 +133,7 @@ chmod +x install.sh
 - **`SUPER + Space`** — Abre o menu de itens/aplicativos do Wofi (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
 - **`Setas ↑ / ↓` ou `Mouse Hover`** — Navega pelos aplicativos no Wofi.
 - **`Tab` / `Seta →` ou clique na seta `▸` à esquerda do ícone** — Expande os modos de inicialização do aplicativo.
+- **`Clique no Ícone de Volume (Waybar)`** — Abre/fecha a UI de Som da Ocarina (`zelda-pavucontrol.py`).
 - **`Clique na Navi (Waybar)`** — Abre a Central de Notificações da Navi (`swaync`).
 - **`~/.config/hypr/scripts/navi-say.sh`** — Dispara uma fala aleatória da Navi a qualquer momento.
 
@@ -136,7 +152,7 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── assets/
 │   │   ├── zelda_border_ornate.png  # Borda 9-slice com arabesco central
 │   │   └── zelda_border.png         # Borda 9-slice minimalista (cantos + linha dupla)
-│   ├── plugins/imgborders/          # Código-fonte C++ do plugin imgborders (UV centralizado)
+│   ├── plugins/imgborders/          # Código-fonte C++ do plugin libzelda_borders (UV centralizado + Título)
 │   └── scripts/
 │       ├── navi-say.sh              # Gerador de notificações da Navi (PT/EN)
 │       ├── navi_frases.txt          # Frases temáticas da Navi (Português)
@@ -153,8 +169,12 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── style.css                    # Estilo Ocarina of Time Remake para notificações
 │   └── icons/                       # Seta inferior do diálogo da Navi
 └── waybar/
-    ├── config.jsonc                 # Barra superior com módulo custom/notification da Navi
-    ├── style.css                    # Transições entre estados idle/alert da Navi
-    ├── icons/                       # Sprites SVG/PNG da Navi (idle e alert)
-    └── scripts/                     # Script de monitoramento do estado da Navi (PT/EN)
+    ├── config.jsonc                 # Barra superior (Navi, Canção do Sol, Medalhões e UI de Som)
+    ├── style.css                    # Ilhas de tapeçaria, estados dos Medalhões e transições da Navi
+    ├── icons/                       # Texturas de tapeçaria, 6 Medalhões, Sol/Lua e sprites da Navi
+    └── scripts/
+        ├── navi-notification.sh     # Monitoramento de estado da Navi (PT/EN)
+        ├── sun-song.sh              # Emblema dinâmico de fases do dia/noite
+        ├── zelda-pavucontrol.py     # Extensão de som inspirada nas Canções da Ocarina (Experimental)
+        └── zelda_sound_assets/      # Assets codificados em base64 (pergaminho, partitura e ícones)
 ```

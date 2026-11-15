@@ -26,7 +26,7 @@
 using namespace GL;
 
 namespace {
-constexpr float T_OPEN_END = 0.45f;
+constexpr float T_OPEN_END = 0.55f;
 constexpr float T_HOLD_END = 3.15f;
 constexpr float T_DISSOLVE_END = 4.25f;
 constexpr int MAX_DISSOLVE_STAGES = 32;
@@ -51,6 +51,14 @@ CImgBorder::~CImgBorder() {
   }
   clearTextures();
   std::erase(g_pGlobalState->borders, m_self);
+}
+
+bool CImgBorder::isShutdownWindow() const {
+  const auto PWINDOW = m_pWindow.lock();
+  if (!PWINDOW)
+    return false;
+  return PWINDOW->metadata().appID() == "zelda-shutdown" ||
+         PWINDOW->metadata().initialAppID() == "zelda-shutdown";
 }
 
 void CImgBorder::clearTextures() {
@@ -95,9 +103,13 @@ void CImgBorder::onAnimTick() {
     if (m_animTimer)
       m_animTimer->updateTimeout(std::chrono::milliseconds(16));
   } else {
-    // Only the app title disappears; the window borders remain permanently!
     m_animationFinished = true;
-    m_titleTex = {};
+    if (isShutdownWindow()) {
+      clearTextures();
+    } else {
+      // Normal app window: keep borders permanently, only clear the title texture!
+      m_titleTex = {};
+    }
     damageEntire();
     if (m_animTimer)
       m_animTimer->updateTimeout(std::nullopt);
@@ -140,7 +152,13 @@ void CImgBorder::ensureTitleTexture() {
   if (m_titleTex.tex != nullptr && (!appID.empty() && appID == m_resolvedAppID))
     return;
 
-  std::string resolved = ImgUtils::resolveDesktopAppName(appID, winTitle);
+  std::string resolved;
+  if (isShutdownWindow()) {
+    resolved = winTitle.empty() ? "Shutdown" : winTitle;
+  } else {
+    resolved = ImgUtils::resolveDesktopAppName(appID, winTitle);
+  }
+
   if (m_titleTex.tex != nullptr && resolved == m_resolvedTitleText)
     return;
 
@@ -156,12 +174,17 @@ SDecorationPositioningInfo CImgBorder::getPositioningInfo() {
                DECORATION_EDGE_TOP | DECORATION_EDGE_BOTTOM;
   info.priority = 4999; // Must be lower than hyprbars
   if (m_isEnabled && !m_isHidden) {
-    info.desiredExtents = {
-        .topLeft = {(m_sizes[0] - m_insets[0]) * m_scale,
-                    (m_sizes[2] - m_insets[2]) * m_scale},
-        .bottomRight = {(m_sizes[1] - m_insets[1]) * m_scale,
-                        (m_sizes[3] - m_insets[3]) * m_scale},
-    };
+    if (isShutdownWindow()) {
+      // Fullscreen shutdown overlay: inset 100% inside the monitor so the edges are never clipped
+      info.desiredExtents = {.topLeft = {0, 0}, .bottomRight = {0, 0}};
+    } else {
+      info.desiredExtents = {
+          .topLeft = {(m_sizes[0] - m_insets[0]) * m_scale,
+                      (m_sizes[2] - m_insets[2]) * m_scale},
+          .bottomRight = {(m_sizes[1] - m_insets[1]) * m_scale,
+                          (m_sizes[3] - m_insets[3]) * m_scale},
+      };
+    }
   }
   info.reserved = true;
   return info;
@@ -175,6 +198,9 @@ void CImgBorder::draw(Render::CRenderContext &ctx, PHLMONITOR, float const &a,
                       const Render::SWindowRenderPresentation &presentation) {
   if (!m_isEnabled || m_isHidden || !validMapped(m_pWindow) ||
       !m_pWindow->m_ruleApplicator->decorate().valueOrDefault())
+    return;
+
+  if (m_animationFinished && isShutdownWindow())
     return;
 
   CImgBorderPassElement::SData data = {.deco = this, .a = a};
@@ -227,6 +253,10 @@ void CImgBorder::drawPass(Render::CRenderContext &ctx, const float &a) {
   if (!pMonitor || !validMapped(m_pWindow))
     return;
 
+  const bool shutdownMode = isShutdownWindow();
+  if (m_animationFinished && shutdownMode)
+    return;
+
   ensureBorderTextures();
   if (!m_isEnabled || !m_tl.tex)
     return;
@@ -244,10 +274,40 @@ void CImgBorder::drawPass(Render::CRenderContext &ctx, const float &a) {
 
   if (!m_animationFinished && elapsed >= T_DISSOLVE_END) {
     m_animationFinished = true;
-    m_titleTex = {};
+    if (shutdownMode) {
+      clearTextures();
+      return;
+    } else {
+      m_titleTex = {};
+    }
     if (m_animTimer)
       m_animTimer->updateTimeout(std::nullopt);
   }
+
+  // For shutdownMode, BOTH borders and text animate & dissolve together.
+  // For normal app windows, borders stay at stage 0 (full) permanently and ONLY the text dissolves.
+  int borderStage = 0;
+  float borderOpenProgress = 1.0f;
+  if (shutdownMode) {
+    if (elapsed < T_OPEN_END) {
+      float tIn = std::clamp(elapsed / T_OPEN_END, 0.0f, 1.0f);
+      borderOpenProgress = 1.0f - (1.0f - tIn) * (1.0f - tIn) * (1.0f - tIn);
+    } else if (elapsed >= T_HOLD_END) {
+      float pOut = std::clamp(
+          (elapsed - T_HOLD_END) / (T_DISSOLVE_END - T_HOLD_END), 0.0f, 1.0f);
+      borderStage = std::clamp((int)std::ceil(pOut * MAX_DISSOLVE_STAGES), 1,
+                               MAX_DISSOLVE_STAGES);
+    }
+  }
+
+  ImgUtils::setDissolveStage(m_tl, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_tr, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_br, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_bl, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_t, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_b, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_l, borderStage, MAX_DISSOLVE_STAGES);
+  ImgUtils::setDissolveStage(m_r, borderStage, MAX_DISSOLVE_STAGES);
 
   auto box = getGlobalBoundingBox()
                  .translate(m_pWindow->presentation().floatingOffset() -
@@ -270,12 +330,17 @@ void CImgBorder::drawPass(Render::CRenderContext &ctx, const float &a) {
 
   ctx.m_data.useNearestNeighbor = !m_shouldSmooth;
 
-  // 1. Always render the permanent ornate 9-slice window borders
+  float cornerAlpha =
+      a * ((shutdownMode && elapsed < T_OPEN_END)
+               ? std::clamp((elapsed / T_OPEN_END) * 2.0f, 0.0f, 1.0f)
+               : 1.0f);
+
+  // Corners
   if (m_tl.tex != nullptr) {
     const CBox box_tl = {box.pos(), {BORDER_LEFT, BORDER_TOP}};
     g_pHyprRenderer->draw(ctx, {.tex = m_tl.tex,
                                 .box = box_tl,
-                                .a = a,
+                                .a = cornerAlpha,
                                 .damage = box_tl,
                                 .blur = shouldBlur(),
                                 .discardMode = DISCARD_ALPHA});
@@ -286,7 +351,7 @@ void CImgBorder::drawPass(Render::CRenderContext &ctx, const float &a) {
                          {BORDER_RIGHT, BORDER_TOP}};
     g_pHyprRenderer->draw(ctx, {.tex = m_tr.tex,
                                 .box = box_tr,
-                                .a = a,
+                                .a = cornerAlpha,
                                 .damage = box_tr,
                                 .blur = shouldBlur(),
                                 .discardMode = DISCARD_ALPHA});
@@ -298,7 +363,7 @@ void CImgBorder::drawPass(Render::CRenderContext &ctx, const float &a) {
         {BORDER_RIGHT, BORDER_BOTTOM}};
     g_pHyprRenderer->draw(ctx, {.tex = m_br.tex,
                                 .box = box_br,
-                                .a = a,
+                                .a = cornerAlpha,
                                 .damage = box_br,
                                 .blur = shouldBlur(),
                                 .discardMode = DISCARD_ALPHA});
@@ -309,86 +374,209 @@ void CImgBorder::drawPass(Render::CRenderContext &ctx, const float &a) {
                          {BORDER_LEFT, BORDER_BOTTOM}};
     g_pHyprRenderer->draw(ctx, {.tex = m_bl.tex,
                                 .box = box_bl,
-                                .a = a,
+                                .a = cornerAlpha,
                                 .damage = box_bl,
                                 .blur = shouldBlur(),
                                 .discardMode = DISCARD_ALPHA});
   }
 
   // Horizontal Edges (Top & Bottom)
-  ctx.m_data.primarySurfaceUVTopLeft = {0., 0.};
-  ctx.m_data.primarySurfaceUVBottomRight = {1., 1.};
-  if (m_t.tex != nullptr && m_t.tex->m_size.x != 0 && scale != 0) {
+  if (m_t.tex != nullptr && m_t.tex->m_size.x != 0 && scale != 0 &&
+      WIDTH_MID > 0) {
     const auto spanX = WIDTH_MID / (m_t.tex->m_size.x * scale);
-    ctx.m_data.primarySurfaceUVTopLeft.x = 0.5 - spanX * 0.5;
-    ctx.m_data.primarySurfaceUVBottomRight.x = 0.5 + spanX * 0.5;
-  }
+    const double u0 = 0.5 - spanX * 0.5;
+    const double u1 = 0.5 + spanX * 0.5;
 
-  if (m_t.tex != nullptr) {
-    const CBox box_t = {{box.x + BORDER_LEFT, box.y}, {WIDTH_MID, BORDER_TOP}};
-    g_pHyprRenderer->draw(ctx, {.tex = m_t.tex,
-                                .box = box_t,
-                                .a = a,
-                                .damage = box_t,
-                                .blur = shouldBlur(),
-                                .allowCustomUV = true,
-                                .wrapX = WRAP_REPEAT,
-                                .wrapY = WRAP_REPEAT,
-                                .discardMode = DISCARD_ALPHA});
-  }
+    if (borderOpenProgress < 0.995f) {
+      const double armW = (WIDTH_MID * 0.5) * borderOpenProgress;
+      const double armU = (spanX * 0.5) * borderOpenProgress;
+      if (armW >= 1.0) {
+        ctx.m_data.primarySurfaceUVTopLeft = {u0, 0.};
+        ctx.m_data.primarySurfaceUVBottomRight = {u0 + armU, 1.};
+        const CBox box_t_l = {{box.x + BORDER_LEFT, box.y}, {armW, BORDER_TOP}};
+        g_pHyprRenderer->draw(ctx, {.tex = m_t.tex,
+                                    .box = box_t_l,
+                                    .a = cornerAlpha,
+                                    .damage = box_t_l,
+                                    .blur = shouldBlur(),
+                                    .allowCustomUV = true,
+                                    .wrapX = WRAP_REPEAT,
+                                    .wrapY = WRAP_REPEAT,
+                                    .discardMode = DISCARD_ALPHA});
+        if (m_b.tex != nullptr) {
+          const CBox box_b_l = {
+              {box.x + BORDER_LEFT, box.y + box.height - BORDER_BOTTOM},
+              {armW, BORDER_BOTTOM}};
+          g_pHyprRenderer->draw(ctx, {.tex = m_b.tex,
+                                      .box = box_b_l,
+                                      .a = cornerAlpha,
+                                      .damage = box_b_l,
+                                      .blur = shouldBlur(),
+                                      .allowCustomUV = true,
+                                      .wrapX = WRAP_REPEAT,
+                                      .wrapY = WRAP_REPEAT,
+                                      .discardMode = DISCARD_ALPHA});
+        }
 
-  if (m_b.tex != nullptr) {
-    const CBox box_b = {
-        {box.x + BORDER_LEFT, box.y + box.height - BORDER_BOTTOM},
-        {WIDTH_MID, BORDER_BOTTOM}};
-    g_pHyprRenderer->draw(ctx, {.tex = m_b.tex,
-                                .box = box_b,
-                                .a = a,
-                                .damage = box_b,
-                                .blur = shouldBlur(),
-                                .allowCustomUV = true,
-                                .wrapX = WRAP_REPEAT,
-                                .wrapY = WRAP_REPEAT,
-                                .discardMode = DISCARD_ALPHA});
+        ctx.m_data.primarySurfaceUVTopLeft = {u1 - armU, 0.};
+        ctx.m_data.primarySurfaceUVBottomRight = {u1, 1.};
+        const CBox box_t_r = {
+            {box.x + BORDER_LEFT + WIDTH_MID - armW, box.y},
+            {armW, BORDER_TOP}};
+        g_pHyprRenderer->draw(ctx, {.tex = m_t.tex,
+                                    .box = box_t_r,
+                                    .a = cornerAlpha,
+                                    .damage = box_t_r,
+                                    .blur = shouldBlur(),
+                                    .allowCustomUV = true,
+                                    .wrapX = WRAP_REPEAT,
+                                    .wrapY = WRAP_REPEAT,
+                                    .discardMode = DISCARD_ALPHA});
+        if (m_b.tex != nullptr) {
+          const CBox box_b_r = {{box.x + BORDER_LEFT + WIDTH_MID - armW,
+                                 box.y + box.height - BORDER_BOTTOM},
+                                {armW, BORDER_BOTTOM}};
+          g_pHyprRenderer->draw(ctx, {.tex = m_b.tex,
+                                      .box = box_b_r,
+                                      .a = cornerAlpha,
+                                      .damage = box_b_r,
+                                      .blur = shouldBlur(),
+                                      .allowCustomUV = true,
+                                      .wrapX = WRAP_REPEAT,
+                                      .wrapY = WRAP_REPEAT,
+                                      .discardMode = DISCARD_ALPHA});
+        }
+      }
+    } else {
+      ctx.m_data.primarySurfaceUVTopLeft = {u0, 0.};
+      ctx.m_data.primarySurfaceUVBottomRight = {u1, 1.};
+      const CBox box_t = {{box.x + BORDER_LEFT, box.y},
+                          {WIDTH_MID, BORDER_TOP}};
+      g_pHyprRenderer->draw(ctx, {.tex = m_t.tex,
+                                  .box = box_t,
+                                  .a = a,
+                                  .damage = box_t,
+                                  .blur = shouldBlur(),
+                                  .allowCustomUV = true,
+                                  .wrapX = WRAP_REPEAT,
+                                  .wrapY = WRAP_REPEAT,
+                                  .discardMode = DISCARD_ALPHA});
+      if (m_b.tex != nullptr) {
+        const CBox box_b = {
+            {box.x + BORDER_LEFT, box.y + box.height - BORDER_BOTTOM},
+            {WIDTH_MID, BORDER_BOTTOM}};
+        g_pHyprRenderer->draw(ctx, {.tex = m_b.tex,
+                                    .box = box_b,
+                                    .a = a,
+                                    .damage = box_b,
+                                    .blur = shouldBlur(),
+                                    .allowCustomUV = true,
+                                    .wrapX = WRAP_REPEAT,
+                                    .wrapY = WRAP_REPEAT,
+                                    .discardMode = DISCARD_ALPHA});
+      }
+    }
   }
 
   // Vertical Edges (Left & Right)
-  ctx.m_data.primarySurfaceUVTopLeft = {0., 0.};
-  ctx.m_data.primarySurfaceUVBottomRight = {1., 1.};
-  if (m_l.tex != nullptr && m_l.tex->m_size.y != 0 && scale != 0) {
+  if (m_l.tex != nullptr && m_l.tex->m_size.y != 0 && scale != 0 &&
+      HEIGHT_MID > 0) {
     const auto spanY = HEIGHT_MID / (m_l.tex->m_size.y * scale);
-    ctx.m_data.primarySurfaceUVTopLeft.y = 0.5 - spanY * 0.5;
-    ctx.m_data.primarySurfaceUVBottomRight.y = 0.5 + spanY * 0.5;
+    const double v0 = 0.5 - spanY * 0.5;
+    const double v1 = 0.5 + spanY * 0.5;
+
+    if (borderOpenProgress < 0.995f) {
+      const double armH = (HEIGHT_MID * 0.5) * borderOpenProgress;
+      const double armV = (spanY * 0.5) * borderOpenProgress;
+      if (armH >= 1.0) {
+        ctx.m_data.primarySurfaceUVTopLeft = {0., v0};
+        ctx.m_data.primarySurfaceUVBottomRight = {1., v0 + armV};
+        const CBox box_l_t = {{box.x, box.y + BORDER_TOP},
+                              {BORDER_LEFT, armH}};
+        g_pHyprRenderer->draw(ctx, {.tex = m_l.tex,
+                                    .box = box_l_t,
+                                    .a = cornerAlpha,
+                                    .damage = box_l_t,
+                                    .blur = shouldBlur(),
+                                    .allowCustomUV = true,
+                                    .wrapX = WRAP_REPEAT,
+                                    .wrapY = WRAP_REPEAT,
+                                    .discardMode = DISCARD_ALPHA});
+        if (m_r.tex != nullptr) {
+          const CBox box_r_t = {
+              {box.x + box.width - BORDER_RIGHT, box.y + BORDER_TOP},
+              {BORDER_RIGHT, armH}};
+          g_pHyprRenderer->draw(ctx, {.tex = m_r.tex,
+                                      .box = box_r_t,
+                                      .a = cornerAlpha,
+                                      .damage = box_r_t,
+                                      .blur = shouldBlur(),
+                                      .allowCustomUV = true,
+                                      .wrapX = WRAP_REPEAT,
+                                      .wrapY = WRAP_REPEAT,
+                                      .discardMode = DISCARD_ALPHA});
+        }
+
+        ctx.m_data.primarySurfaceUVTopLeft = {0., v1 - armV};
+        ctx.m_data.primarySurfaceUVBottomRight = {1., v1};
+        const CBox box_l_b = {{box.x, box.y + BORDER_TOP + HEIGHT_MID - armH},
+                              {BORDER_LEFT, armH}};
+        g_pHyprRenderer->draw(ctx, {.tex = m_l.tex,
+                                    .box = box_l_b,
+                                    .a = cornerAlpha,
+                                    .damage = box_l_b,
+                                    .blur = shouldBlur(),
+                                    .allowCustomUV = true,
+                                    .wrapX = WRAP_REPEAT,
+                                    .wrapY = WRAP_REPEAT,
+                                    .discardMode = DISCARD_ALPHA});
+        if (m_r.tex != nullptr) {
+          const CBox box_r_b = {{box.x + box.width - BORDER_RIGHT,
+                                 box.y + BORDER_TOP + HEIGHT_MID - armH},
+                                {BORDER_RIGHT, armH}};
+          g_pHyprRenderer->draw(ctx, {.tex = m_r.tex,
+                                      .box = box_r_b,
+                                      .a = cornerAlpha,
+                                      .damage = box_r_b,
+                                      .blur = shouldBlur(),
+                                      .allowCustomUV = true,
+                                      .wrapX = WRAP_REPEAT,
+                                      .wrapY = WRAP_REPEAT,
+                                      .discardMode = DISCARD_ALPHA});
+        }
+      }
+    } else {
+      ctx.m_data.primarySurfaceUVTopLeft = {0., v0};
+      ctx.m_data.primarySurfaceUVBottomRight = {1., v1};
+      const CBox box_l = {{box.x, box.y + BORDER_TOP},
+                          {BORDER_LEFT, HEIGHT_MID}};
+      g_pHyprRenderer->draw(ctx, {.tex = m_l.tex,
+                                  .box = box_l,
+                                  .a = a,
+                                  .damage = box_l,
+                                  .blur = shouldBlur(),
+                                  .allowCustomUV = true,
+                                  .wrapX = WRAP_REPEAT,
+                                  .wrapY = WRAP_REPEAT,
+                                  .discardMode = DISCARD_ALPHA});
+      if (m_r.tex != nullptr) {
+        const CBox box_r = {
+            {box.x + box.width - BORDER_RIGHT, box.y + BORDER_TOP},
+            {BORDER_RIGHT, HEIGHT_MID}};
+        g_pHyprRenderer->draw(ctx, {.tex = m_r.tex,
+                                    .box = box_r,
+                                    .a = a,
+                                    .damage = box_r,
+                                    .blur = shouldBlur(),
+                                    .allowCustomUV = true,
+                                    .wrapX = WRAP_REPEAT,
+                                    .wrapY = WRAP_REPEAT,
+                                    .discardMode = DISCARD_ALPHA});
+      }
+    }
   }
 
-  if (m_l.tex != nullptr) {
-    const CBox box_l = {{box.x, box.y + BORDER_TOP}, {BORDER_LEFT, HEIGHT_MID}};
-    g_pHyprRenderer->draw(ctx, {.tex = m_l.tex,
-                                .box = box_l,
-                                .a = a,
-                                .damage = box_l,
-                                .blur = shouldBlur(),
-                                .allowCustomUV = true,
-                                .wrapX = WRAP_REPEAT,
-                                .wrapY = WRAP_REPEAT,
-                                .discardMode = DISCARD_ALPHA});
-  }
-
-  if (m_r.tex != nullptr) {
-    const CBox box_r = {{box.x + box.width - BORDER_RIGHT, box.y + BORDER_TOP},
-                        {BORDER_RIGHT, HEIGHT_MID}};
-    g_pHyprRenderer->draw(ctx, {.tex = m_r.tex,
-                                .box = box_r,
-                                .a = a,
-                                .damage = box_r,
-                                .blur = shouldBlur(),
-                                .allowCustomUV = true,
-                                .wrapX = WRAP_REPEAT,
-                                .wrapY = WRAP_REPEAT,
-                                .discardMode = DISCARD_ALPHA});
-  }
-
-  // 2. Dungeon App Name Title (centered horizontally on the window, visible ~3s then organically dissolves)
+  // Dungeon Title (centered horizontally on the window, visible ~3s then organically dissolves)
   if (!m_animationFinished) {
     ensureTitleTexture();
 
