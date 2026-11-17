@@ -79,6 +79,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
   - Workspace 6+ — **Spirit Medallion** (`medallion-6-*`)
   - Each medallion features distinct visual states for **empty** (carved stone slot), **inactive/occupied** (colored emblem), and **active/focused** (bright glowing medallion).
 - **Dynamic *Sun's Song* Time-of-Day Emblem (`custom/sun-song` + `sun-song.sh`):** Displays a tapestry-styled celestial emblem next to the clock that automatically transitions across 6 phases of the day (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) with localized tooltips.
+- **Smart Per-Workspace Fullscreen Sync (`hypr/scripts/waybar-fullscreen.sh`):** Automatically hides Waybar when the active workspace contains a fullscreen window (`hasfullscreen == true`) and restores it immediately when switching to a workspace without a fullscreen window or exiting fullscreen.
 
 ---
 
@@ -87,7 +88,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 On Arch Linux (and derivatives):
 
 ```bash
-sudo pacman -S hyprland wofi swaync waybar libnotify socat python gcc pkgconf gtk3
+sudo pacman -S hyprland wofi swaync waybar libnotify socat jq python gcc pkgconf gtk3
 ```
 
 *(Optional font used in the CSS stylesheets)*:
@@ -114,7 +115,7 @@ chmod +x install.sh
 The installer automatically:
 1. Replaces `__HOME__` placeholders with your `$HOME` path across all configs and stylesheets.
 2. Backs up your existing `hyprland.lua` / `hyprland.conf` to `.pre-zelda.bak`.
-3. Compiles the patched `libimgborders.so` Hyprland plugin and `libwofi_hover.so` GTK3 hook.
+3. Compiles the patched `libzelda_borders.so` Hyprland plugin and `libwofi_hover.so` GTK3 hook.
 4. Configures Navi's quotes, Waybar tooltips, SwayNC labels, and Wofi search prompt in your chosen language (`EN` or `PT-BR`).
 
 ---
@@ -122,6 +123,8 @@ The installer automatically:
 ## 🎮 Keybindings & Usage
 
 - **`SUPER + Space`** — Open the Wofi item/app menu (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
+- **`SUPER + F`** — Toggle fullscreen on the active window (automatically hides/restores Waybar per workspace).
+- **`SUPER + Print`** — Open the Zelda-themed Screenshot & Screen Recording Wofi menu (`screen-capture.sh`).
 - **`Arrow Keys ↑ / ↓` or `Mouse Hover`** — Navigate through items in Wofi.
 - **`Tab` / `Right Arrow →` or click the `▸` arrow to the left of an icon** — Expand secondary launch actions for an app.
 - **`Click Navi Icon (Waybar)`** — Toggle the Navi Notification Center (`swaync`).
@@ -142,13 +145,15 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── assets/
 │   │   ├── zelda_border_ornate.png  # 9-slice border with centered edge ornaments
 │   │   └── zelda_border.png         # Minimal 9-slice border (corners + double lines)
-│   ├── plugins/imgborders/          # Patched C++ source for imgborders (centered UVs)
+│   ├── plugins/imgborders/          # Patched C++ source for libzelda_borders (centered UVs + Dungeon Title)
 │   └── scripts/
 │       ├── navi-say.sh              # Random Navi notification trigger (EN / PT-BR)
 │       ├── navi_frases_en.txt       # Navi themed quotes (English)
 │       ├── navi_frases.txt          # Navi themed quotes (Portuguese)
 │       ├── hyprsunset-toggle.sh     # Blue-light shader toggle
-│       └── waybar-fullscreen.sh     # Auto-hide Waybar on fullscreen windows
+│       ├── screen-capture.sh        # Unified screenshot & screen recording script + menu
+│       ├── capture-menu.css         # Zelda-styled Wofi theme for capture menu
+│       └── waybar-fullscreen.sh     # Per-workspace Waybar auto-hide on fullscreen windows
 ├── wofi/
 │   ├── config                       # Wofi geometry & layout configuration
 │   ├── style.css                    # Ocarina of Time Remake item screen stylesheet
@@ -159,8 +164,8 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── style.css                    # Ocarina of Time Remake speech bubble stylesheet
 │   └── icons/                       # Bottom-center Navi dialogue arrow (SVG/PNG)
 └── waybar/
-    ├── config.jsonc                 # Top bar config with Navi custom/notification module
-    ├── style.css                    # Navi idle/alert sprite transitions
-    ├── icons/                       # Navi SVG/PNG sprites (idle & alert)
-    └── scripts/                     # Real-time SwayNC listener & state emitter (EN / PT-BR)
+    ├── config.jsonc                 # Top bar config (Navi, Sun's Song, Sage Medallions)
+    ├── style.css                    # Tapestry islands, Medallion states & Navi transitions
+    ├── icons/                       # Tapestry textures, 6 Sage Medallions, Sun/Moon & Navi sprites
+    └── scripts/                     # Real-time SwayNC listener & Sun's Song state emitter (EN / PT-BR)
 ```

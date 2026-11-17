@@ -1,0 +1,80 @@
+* {
+    font-family: "Noto Serif Display", "Noto Serif", "DejaVu Serif", serif;
+    outline: none;
+    box-shadow: none;
+}
+
+window {
+    margin: 0px;
+    padding: 0px;
+    background-color: rgba(20, 15, 10, 0.90);
+    border: 2px solid rgba(195, 168, 115, 0.75);
+    border-radius: 8px;
+}
+
+#outer-box {
+    margin: 12px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#input {
+    margin: 0px 0px 10px 0px;
+    padding: 8px 12px;
+    background-color: rgba(34, 24, 16, 0.85);
+    border: 1px solid rgba(195, 168, 115, 0.55);
+    border-radius: 5px;
+    color: #f6f4e4;
+    font-size: 15px;
+    font-weight: 600;
+    caret-color: #f6f4e4;
+}
+
+#input image {
+    color: rgba(235, 224, 190, 0.85);
+    margin-right: 8px;
+}
+
+#scroll {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#inner-box {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#entry {
+    margin: 4px 0px;
+    padding: 10px 14px;
+    background-color: rgba(34, 24, 16, 0.75);
+    border: 1px solid rgba(105, 78, 50, 0.55);
+    border-radius: 5px;
+}
+
+#entry:selected,
+#entry:hover {
+    background-color: rgba(195, 168, 115, 0.30);
+    border: 1px solid #fffef0;
+}
+
+#text {
+    color: #dfd3b8;
+    font-size: 15px;
+    font-weight: 600;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+#entry:selected #text,
+#entry:hover #text {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    text-shadow: 0px 0px 8px rgba(180, 230, 255, 0.7);
+}

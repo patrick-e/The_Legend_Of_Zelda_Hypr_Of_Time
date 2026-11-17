@@ -79,6 +79,7 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
   - Workspace 6+ — **Medalhão do Espírito** (`medallion-6-*`)
   - Cada medalhão possui estados visuais distintos para **vazio** (`empty`, entalhe apagado), **inativo/ocupado** (`inactive`, medalhão colorido) e **ativo/focado** (`active`, medalhão reluzente).
 - **Emblema Dinâmico da *Canção do Sol* (`custom/sun-song` + `sun-song.sh`):** Exibe ao lado do relógio um emblema celeste em estilo tapeçaria que alterna automaticamente entre 6 fases do dia (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) conforme o horário do sistema.
+- **Sincronização Inteligente de Fullscreen por Workspace (`hypr/scripts/waybar-fullscreen.sh`):** Oculta automaticamente a Waybar quando o workspace ativo possui uma janela em tela cheia (`hasfullscreen == true`) e a reabre imediatamente ao alternar para um workspace sem janela em tela cheia ou ao sair do modo fullscreen.
 
 ---
 
@@ -87,7 +88,7 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
 No Arch Linux (e derivados):
 
 ```bash
-sudo pacman -S hyprland wofi swaync waybar libnotify socat python gcc pkgconf gtk3
+sudo pacman -S hyprland wofi swaync waybar libnotify socat jq python gcc pkgconf gtk3
 ```
 
 *(Opcional para a fonte temática usada no CSS)*:
@@ -116,6 +117,8 @@ chmod +x install.sh
 ## 🎮 Atalhos e Uso
 
 - **`SUPER + Space`** — Abre o menu de itens/aplicativos do Wofi (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
+- **`SUPER + F`** — Alterna tela cheia na janela ativa (ocultando/exibindo a Waybar automaticamente conforme o workspace).
+- **`SUPER + Print`** — Abre o menu temático de Captura de Tela e Gravação de Vídeo (`screen-capture.sh`).
 - **`Setas ↑ / ↓` ou `Mouse Hover`** — Navega pelos aplicativos no Wofi.
 - **`Tab` / `Seta →` ou clique na seta `▸` à esquerda do ícone** — Expande os modos de inicialização do aplicativo.
 - **`Clique na Navi (Waybar)`** — Abre a Central de Notificações da Navi (`swaync`).
@@ -136,13 +139,15 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── assets/
 │   │   ├── zelda_border_ornate.png  # Borda 9-slice com arabesco central
 │   │   └── zelda_border.png         # Borda 9-slice minimalista (cantos + linha dupla)
-│   ├── plugins/imgborders/          # Código-fonte C++ do plugin imgborders (UV centralizado)
+│   ├── plugins/imgborders/          # Código-fonte C++ do plugin libzelda_borders (UV centralizado + Título)
 │   └── scripts/
 │       ├── navi-say.sh              # Gerador de notificações da Navi (PT/EN)
 │       ├── navi_frases.txt          # Frases temáticas da Navi (Português)
 │       ├── navi_frases_en.txt       # Frases temáticas da Navi (Inglês)
 │       ├── hyprsunset-toggle.sh     # Alternador de filtro de luz azul
-│       └── waybar-fullscreen.sh     # Oculta Waybar automaticamente em fullscreen
+│       ├── screen-capture.sh        # Script unificado de captura de tela e gravação de vídeo
+│       ├── capture-menu.css         # Estilo Zelda para o menu de captura no Wofi
+│       └── waybar-fullscreen.sh     # Oculta/restaura a Waybar automaticamente por workspace em fullscreen
 ├── wofi/
 │   ├── config                       # Configuração de geometria do Wofi
 │   ├── style.css                    # Tema Ocarina of Time Remake
@@ -153,8 +158,8 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── style.css                    # Estilo Ocarina of Time Remake para notificações
 │   └── icons/                       # Seta inferior do diálogo da Navi
 └── waybar/
-    ├── config.jsonc                 # Barra superior com módulo custom/notification da Navi
-    ├── style.css                    # Transições entre estados idle/alert da Navi
-    ├── icons/                       # Sprites SVG/PNG da Navi (idle e alert)
-    └── scripts/                     # Script de monitoramento do estado da Navi (PT/EN)
+    ├── config.jsonc                 # Barra superior (Navi, Canção do Sol e Medalhões dos Sábios)
+    ├── style.css                    # Ilhas de tapeçaria, estados dos Medalhões e transições da Navi
+    ├── icons/                       # Texturas de tapeçaria, 6 Medalhões, Sol/Lua e sprites da Navi
+    └── scripts/                     # Monitoramento de estado da Navi e fases do Sol (PT/EN)
 ```
