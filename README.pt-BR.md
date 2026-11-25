@@ -87,6 +87,7 @@ Tema completo para **Hyprland**, **Wofi**, **SwayNC** e **Waybar** inspirado na 
   - Workspace 6+ — **Medalhão do Espírito** (`medallion-6-*`)
   - Cada medalhão possui estados visuais distintos para **vazio** (`empty`, entalhe apagado), **inativo/ocupado** (`inactive`, medalhão colorido) e **ativo/focado** (`active`, medalhão reluzente).
 - **Emblema Dinâmico da *Canção do Sol* (`custom/sun-song` + `sun-song.sh`):** Exibe ao lado do relógio um emblema celeste em estilo tapeçaria que alterna automaticamente entre 6 fases do dia (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) conforme o horário do sistema.
+- **Sincronização Inteligente de Fullscreen por Workspace (`hypr/scripts/waybar-fullscreen.sh`):** Oculta automaticamente a Waybar quando o workspace ativo possui uma janela em tela cheia (`hasfullscreen == true`) e a reabre imediatamente ao alternar para um workspace sem janela em tela cheia ou ao sair do modo fullscreen.
 
 ### 5. 🎶 Mixer de Som — Tela de Canções da Ocarina (`waybar/scripts/zelda-pavucontrol.py` — Experimental)
 > ⚠️ **Aviso:** Esta funcionalidade está atualmente em **fase experimental / testes** (vinculada à Issue #2 na branch `2-we-don-t-have-music-ui`) e ainda pode conter bugs não explorados.
@@ -131,6 +132,8 @@ chmod +x install.sh
 ## 🎮 Atalhos e Uso
 
 - **`SUPER + Space`** — Abre o menu de itens/aplicativos do Wofi (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
+- **`SUPER + F`** — Alterna tela cheia na janela ativa (ocultando/exibindo a Waybar automaticamente conforme o workspace).
+- **`SUPER + Print`** — Abre o menu temático de Captura de Tela e Gravação de Vídeo (`screen-capture.sh`).
 - **`Setas ↑ / ↓` ou `Mouse Hover`** — Navega pelos aplicativos no Wofi.
 - **`Tab` / `Seta →` ou clique na seta `▸` à esquerda do ícone** — Expande os modos de inicialização do aplicativo.
 - **`Clique no Ícone de Volume (Waybar)`** — Abre/fecha a UI de Som da Ocarina (`zelda-pavucontrol.py`).
@@ -158,7 +161,9 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │       ├── navi_frases.txt          # Frases temáticas da Navi (Português)
 │       ├── navi_frases_en.txt       # Frases temáticas da Navi (Inglês)
 │       ├── hyprsunset-toggle.sh     # Alternador de filtro de luz azul
-│       └── waybar-fullscreen.sh     # Oculta Waybar automaticamente em fullscreen
+│       ├── screen-capture.sh        # Script unificado de captura de tela e gravação de vídeo
+│       ├── capture-menu.css         # Estilo Zelda para o menu de captura no Wofi
+│       └── waybar-fullscreen.sh     # Oculta/restaura a Waybar automaticamente por workspace em fullscreen
 ├── wofi/
 │   ├── config                       # Configuração de geometria do Wofi
 │   ├── style.css                    # Tema Ocarina of Time Remake

@@ -254,7 +254,7 @@ hl.bind(mainMod .. " + R",    hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P",    hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J",    hl.dsp.layout("togglesplit")) -- dwindle
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("env LD_PRELOAD=__HOME__/.config/wofi/libwofi_hover.so wofi --show drun"))
-hl.bind(mainMod .. " + F",    hl.dsp.window.fullscreen({ mode = "maximized" }))
+hl.bind(mainMod .. " + F",    hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 hl.bind(mainMod .. " + N",    hl.dsp.exec_cmd("~/.config/hypr/scripts/hyprsunset-toggle.sh")) -- Toggle modo noturno (hyprsunset)
 
 -- Move focus with mainMod + arrow keys
@@ -297,9 +297,12 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
--- Print
-hl.bind("SHIFT + Print", hl.dsp.exec_cmd("hyprshot -m output"))
-hl.bind("Print",         hl.dsp.exec_cmd("hyprshot -m region"))
+-- Print & Gravação de Tela
+hl.bind("Print",                hl.dsp.exec_cmd("~/.config/hypr/scripts/screen-capture.sh shot-region"))
+hl.bind("SHIFT + Print",        hl.dsp.exec_cmd("~/.config/hypr/scripts/screen-capture.sh shot-output"))
+hl.bind("CTRL + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screen-capture.sh record-region"))
+hl.bind("CTRL + SHIFT + Print", hl.dsp.exec_cmd("~/.config/hypr/scripts/screen-capture.sh record-output"))
+hl.bind(mainMod .. " + Print",  hl.dsp.exec_cmd("~/.config/hypr/scripts/screen-capture.sh menu"))
 
 
 --------------------------------

@@ -87,6 +87,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
   - Workspace 6+ — **Spirit Medallion** (`medallion-6-*`)
   - Each medallion features distinct visual states for **empty** (carved stone slot), **inactive/occupied** (colored emblem), and **active/focused** (bright glowing medallion).
 - **Dynamic *Sun's Song* Time-of-Day Emblem (`custom/sun-song` + `sun-song.sh`):** Displays a tapestry-styled celestial emblem next to the clock that automatically transitions across 6 phases of the day (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) with localized tooltips.
+- **Smart Per-Workspace Fullscreen Sync (`hypr/scripts/waybar-fullscreen.sh`):** Automatically hides Waybar when the active workspace contains a fullscreen window (`hasfullscreen == true`) and restores it immediately when switching to a workspace without a fullscreen window or exiting fullscreen.
 
 ### 5. 🎶 Ocarina Song Screen Audio Mixer (`waybar/scripts/zelda-pavucontrol.py` — Experimental)
 > ⚠️ **Note:** This feature is currently in **experimental / testing phase** (tracked under Issue #2 on branch `2-we-don-t-have-music-ui`) and may still contain unexplored edge cases.
@@ -137,6 +138,8 @@ The installer automatically:
 ## 🎮 Keybindings & Usage
 
 - **`SUPER + Space`** — Open the Wofi item/app menu (`LD_PRELOAD=~/.config/wofi/libwofi_hover.so wofi --show drun`).
+- **`SUPER + F`** — Toggle fullscreen on the active window (automatically hides/restores Waybar per workspace).
+- **`SUPER + Print`** — Open the Zelda-themed Screenshot & Screen Recording Wofi menu (`screen-capture.sh`).
 - **`Arrow Keys ↑ / ↓` or `Mouse Hover`** — Navigate through items in Wofi.
 - **`Tab` / `Right Arrow →` or click the `▸` arrow to the left of an icon** — Expand secondary launch actions for an app.
 - **`Click Volume Icon (Waybar)`** — Toggle the Ocarina Song Screen Audio Mixer (`zelda-pavucontrol.py`).
@@ -164,7 +167,9 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │       ├── navi_frases_en.txt       # Navi themed quotes (English)
 │       ├── navi_frases.txt          # Navi themed quotes (Portuguese)
 │       ├── hyprsunset-toggle.sh     # Blue-light shader toggle
-│       └── waybar-fullscreen.sh     # Auto-hide Waybar on fullscreen windows
+│       ├── screen-capture.sh        # Unified screenshot & screen recording script + menu
+│       ├── capture-menu.css         # Zelda-styled Wofi theme for capture menu
+│       └── waybar-fullscreen.sh     # Per-workspace Waybar auto-hide on fullscreen windows
 ├── wofi/
 │   ├── config                       # Wofi geometry & layout configuration
 │   ├── style.css                    # Ocarina of Time Remake item screen stylesheet
