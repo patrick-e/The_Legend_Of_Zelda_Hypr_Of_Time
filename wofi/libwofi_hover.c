@@ -1,6 +1,14 @@
 #define _GNU_SOURCE
 #include <dlfcn.h>
 #include <gtk/gtk.h>
+#include <stdlib.h>
+
+/* Remove LD_PRELOAD do ambiente assim que a lib carrega, para que apps
+ * abertos pelo wofi (ex: Steam) nao herdem este preload. */
+__attribute__((constructor))
+static void wofi_hover_init(void) {
+    unsetenv("LD_PRELOAD");
+}
 
 static gboolean on_flowbox_motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data) {
     GtkFlowBox *box = GTK_FLOW_BOX(widget);

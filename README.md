@@ -43,6 +43,13 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 | ![Waybar Tapestry Inspiration](assets/previews/waybar_tapestry_inspiration.jpg) | ![Waybar Tapestry Result](assets/previews/waybar_tapestry_result.png) |
 | *Ancient Hyrule tapestry featuring woven borders, the 6 Sage Medallions around the Triforce, and celestial motifs.* | *Three tapestry-framed islands (`tapestry-bg.png` + `tapestry-border.png`), the **6 Sage Medallions** as workspace indicators, and a dynamic **Sun's Song** time-of-day emblem.* |
 
+### 6. 🎶 Ocarina Song Screen Audio Mixer (`Waybar Sound Extension` — Experimental)
+
+| 🎮 Inspiration (*Ocarina of Time Remake Song Screen*) | ✨ Result (*Tapestry Sound Mixer Extension*) |
+| :---: | :---: |
+| ![Sound UI Inspiration](assets/previews/sound_ui_inspiration.png) | ![Sound UI Result](assets/previews/sound_ui_result.png) |
+| *In-game Ocarina song selection arc, lower Sage Medallions arc, and treble-clef musical staff parchment.* | *Waybar `GtkLayerShell` dropdown mixer with 5 upper-arc audio tabs, 6 lower-arc active app badges, 3-layer musical staff parchment (Spotify art or loudest app icon), and volume sliders.* |
+
 ---
 
 ## ✨ Features Included
@@ -50,7 +57,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 ### 1. 🖼️ Ornate 9-Slice Window Borders & Dungeon Intro Title (`hypr/`)
 - High-resolution 9-slice border textures (`zelda_border_ornate.png` and `zelda_border.png`) featuring symmetrical corner flourishes, seamless continuous ivory/aged-gold double lines, and **a single centered ornament** in the middle of each window edge.
 - **Dungeon Entrance App Title & Dissolve:** When a window opens, its application name is rendered centered at the bottom of the window (aligned with the center border ornament) using *Ocarina of Time* dungeon typography (Small Caps with dropped initial capitals, warm ivory gradient, and carved inner vertical grooves/diamonds). The title stays visible for ~3 seconds and organically erodes/dissolves away while the ornate window borders remain permanently.
-- Custom patched [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) Hyprland plugin with centered UV mapping (`0.5 - span * 0.5` to `0.5 + span * 0.5`) so the middle ornament stays perfectly centered on every window edge regardless of window dimensions.
+- Custom patched [`imgborders`](hypr/plugins/imgborders/ImgBorder.cpp) Hyprland plugin with centered UV mapping (`0.5 - span * 0.5` to `0.5 + span * 0.5`) and opening border animation so the middle ornament stays perfectly centered on every window edge regardless of window dimensions.
 - Includes both Hyprland Lua config (`hyprland.lua`) and classic config (`hyprland.conf`).
 
 ### 2. 🎒 Wofi App Launcher — *Ocarina of Time Remake Item Screen* (`wofi/`)
@@ -60,6 +67,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 - App names are displayed **outside the square** (to the right, above an ornate gold/ivory underline) **only when the item is selected**.
 - **Native Mouse Hover & Sub-Actions (`libwofi_hover.c`):**
   - Instant mouse-hover selection (`gtk_flow_box_select_child`) + single-click activation.
+  - Automatically unsets `LD_PRELOAD` via constructor so launched child apps (e.g. Steam) never inherit the GTK3 hook.
   - Clickable expander arrow (`▸`) to the left of multi-action apps (e.g., *New Window*, *New Incognito Window* on browsers).
   - Horizontal scroll lock (`GTK_POLICY_NEVER` + `hadjustment = 0`) so the icon column remains fixed at the exact center regardless of long `.desktop` app names or screenshot tools.
 
@@ -81,6 +89,13 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 - **Dynamic *Sun's Song* Time-of-Day Emblem (`custom/sun-song` + `sun-song.sh`):** Displays a tapestry-styled celestial emblem next to the clock that automatically transitions across 6 phases of the day (`dawn`, `morning`, `day`, `afternoon`, `dusk`, `night`) with localized tooltips.
 - **Smart Per-Workspace Fullscreen Sync (`hypr/scripts/waybar-fullscreen.sh`):** Automatically hides Waybar when the active workspace contains a fullscreen window (`hasfullscreen == true`) and restores it immediately when switching to a workspace without a fullscreen window or exiting fullscreen.
 
+### 5. 🎶 Ocarina Song Screen Audio Mixer (`waybar/scripts/zelda-pavucontrol.py` — Experimental)
+> ⚠️ **Note:** This feature is currently in **experimental / testing phase** (tracked under Issue #2 on branch `2-we-don-t-have-music-ui`) and may still contain unexplored edge cases.
+- Anchored top-right Waybar dropdown panel via `GtkLayerShell` styled with the same woven tapestry background and border (`tapestry-bg.png` + `tapestry-border.png`).
+- **Upper Arc (5 Ocarina Song Icons):** Switch between *Settings* (Triforce), *Recording* (Hyrule Crest), *Playback* (Sun's Song), *Output Device* (Song of Storms), and *Input Device* (Epona's Song).
+- **Lower Arc (6 Medallion Slots):** Dynamically replaces each medallion slot 1-by-1 with the real `.desktop` icon of currently active audio-playing apps.
+- **3-Layer Musical Staff Parchment:** Renders the parchment base -> semi-transparent Spotify album art (if playing) or the loudest active application's icon -> treble clef and 5 staff lines on top, along with real-time volume sliders below.
+
 ---
 
 ## 📦 Dependencies
@@ -88,7 +103,7 @@ A complete **Hyprland**, **Wofi**, **SwayNC**, and **Waybar** rice inspired by t
 On Arch Linux (and derivatives):
 
 ```bash
-sudo pacman -S hyprland wofi swaync waybar libnotify socat jq python gcc pkgconf gtk3
+sudo pacman -S hyprland wofi swaync waybar libnotify socat python gcc pkgconf gtk3 python-gobject gtk-layer-shell webkit2gtk-4.1 python-pillow playerctl libpulse
 ```
 
 *(Optional font used in the CSS stylesheets)*:
@@ -127,6 +142,7 @@ The installer automatically:
 - **`SUPER + Print`** — Open the Zelda-themed Screenshot & Screen Recording Wofi menu (`screen-capture.sh`).
 - **`Arrow Keys ↑ / ↓` or `Mouse Hover`** — Navigate through items in Wofi.
 - **`Tab` / `Right Arrow →` or click the `▸` arrow to the left of an icon** — Expand secondary launch actions for an app.
+- **`Click Volume Icon (Waybar)`** — Toggle the Ocarina Song Screen Audio Mixer (`zelda-pavucontrol.py`).
 - **`Click Navi Icon (Waybar)`** — Toggle the Navi Notification Center (`swaync`).
 - **`~/.config/hypr/scripts/navi-say.sh`** — Trigger a random Navi quote notification at any time.
 
@@ -164,8 +180,12 @@ The_Legend_Of_Zelda_Hypr_Of_Time/
 │   ├── style.css                    # Ocarina of Time Remake speech bubble stylesheet
 │   └── icons/                       # Bottom-center Navi dialogue arrow (SVG/PNG)
 └── waybar/
-    ├── config.jsonc                 # Top bar config (Navi, Sun's Song, Sage Medallions)
+    ├── config.jsonc                 # Top bar config (Navi, Sun's Song, Sage Medallions, Sound UI)
     ├── style.css                    # Tapestry islands, Medallion states & Navi transitions
     ├── icons/                       # Tapestry textures, 6 Sage Medallions, Sun/Moon & Navi sprites
-    └── scripts/                     # Real-time SwayNC listener & Sun's Song state emitter (EN / PT-BR)
+    └── scripts/
+        ├── navi-notification.sh     # Real-time SwayNC listener & state emitter (EN / PT-BR)
+        ├── sun-song.sh              # Dynamic Sun's Song time-of-day emblem emitter
+        ├── zelda-pavucontrol.py     # Ocarina Song Screen audio mixer extension (Experimental)
+        └── zelda_sound_assets/      # Base64 encoded parchment, staff & Ocarina song icons
 ```

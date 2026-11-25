@@ -161,7 +161,7 @@
             "scroll-step": 1,
             "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
             "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
-            "on-click": "pavucontrol",
+            "on-click": "~/.config/waybar/scripts/zelda-pavucontrol.py",
             "tooltip": false
         },
         "custom/lock": {

@@ -108,10 +108,10 @@ if [[ "$THEME_LANG" == "en" ]]; then
     sed -i 's/Navi está quieta/Navi is quiet/g; s/Silenciar Navi/Silence Navi/g' "$CONFIG_DIR/swaync/config.json"
 fi
 
-echo "[5/5] Installing Waybar Navi status indicator..."
+echo "[5/5] Installing Waybar Tapestry, Navi & Ocarina Sound UI..."
 cp -f "$REPO_DIR/waybar/icons/"* "$CONFIG_DIR/waybar/icons/"
-cp -f "$REPO_DIR/waybar/scripts/"* "$CONFIG_DIR/waybar/scripts/"
-chmod +x "$CONFIG_DIR/waybar/scripts/"*.sh
+cp -rf "$REPO_DIR/waybar/scripts/"* "$CONFIG_DIR/waybar/scripts/"
+chmod +x "$CONFIG_DIR/waybar/scripts/"*.sh "$CONFIG_DIR/waybar/scripts/"*.py 2>/dev/null || true
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/waybar/config.jsonc" > "$CONFIG_DIR/waybar/config.jsonc"
 sed "s|__HOME__|$HOME|g" "$REPO_DIR/waybar/style.css" > "$CONFIG_DIR/waybar/style.css"
 

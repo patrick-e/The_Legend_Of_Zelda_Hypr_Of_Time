@@ -46,6 +46,7 @@ public:
   WP<CImgBorder> m_self;
 
 private:
+  bool isShutdownWindow() const;
   void onAnimTick();
   void clearTextures();
   void ensureBorderTextures();
