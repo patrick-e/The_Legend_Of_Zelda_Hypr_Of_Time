@@ -31,6 +31,7 @@ local menu        = "hyprlauncher"
 
 -- See https://wiki.hypr.land/configuring/core/autostart/
 hl.on("hyprland.start", function ()
+    hl.exec_cmd("__HOME__/.config/hypr/scripts/ensure-zelda-borders.sh")
     hl.exec_cmd("swaync")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("hyprsunset")

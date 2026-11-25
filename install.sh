@@ -36,7 +36,7 @@ echo "============================================================"
 # 1. Create target directories
 mkdir -p \
     "$CONFIG_DIR/hypr/assets" \
-    "$CONFIG_DIR/hypr/plugins" \
+    "$CONFIG_DIR/hypr/plugins/imgborders" \
     "$CONFIG_DIR/hypr/scripts" \
     "$CONFIG_DIR/wofi/assets" \
     "$CONFIG_DIR/swaync/icons" \
@@ -46,6 +46,7 @@ mkdir -p \
 # 2. Copy Hyprland assets, scripts, and configs (backing up existing ones)
 echo "[1/5] Installing Hyprland Zelda border assets & scripts..."
 cp -f "$REPO_DIR/hypr/assets/"*.png "$CONFIG_DIR/hypr/assets/"
+cp -f "$REPO_DIR/hypr/plugins/imgborders/"* "$CONFIG_DIR/hypr/plugins/imgborders/"
 cp -f "$REPO_DIR/hypr/scripts/"* "$CONFIG_DIR/hypr/scripts/"
 echo "$THEME_LANG" > "$CONFIG_DIR/hypr/scripts/.navi_lang"
 chmod +x "$CONFIG_DIR/hypr/scripts/"*.sh
